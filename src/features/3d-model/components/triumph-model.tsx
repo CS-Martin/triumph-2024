@@ -230,14 +230,12 @@ export function TriumphModel(props?: Partial<TriumphModelProps>) {
                         {/* Left lamp */}
                         {/* Lamp lights */}
                         <pointLight castShadow position={[-22, 24, -2]} intensity={800} color="orange" />
-                        <pointLight castShadow position={[-22, 24, -8]} intensity={800} color="orange" />
 
                         {/* Lamp shadows */}
                         <pointLight castShadow position={[-14, 28, -8]} intensity={800} color="orange" />
 
                         {/* Lamp light sources */}
                         <pointLight distance={100} position={[-24, 24.5, -8]} intensity={200} color="#DADB5B" />
-                        <pointLight distance={100} position={[-24, 24.5, -8]} intensity={250} color="#FE9E4B" />
                         <pointLight distance={100} position={[-24, 24.5, -8]} intensity={300} color="red" />
 
 
@@ -251,7 +249,6 @@ export function TriumphModel(props?: Partial<TriumphModelProps>) {
 
                         {/* Lamp light sources */}
                         <pointLight distance={100} position={[24, 24.5, -8]} intensity={200} color="#DADB5B" />
-                        <pointLight distance={100} position={[24, 24.5, -8]} intensity={250} color="#FE9E4B" />
                         <pointLight distance={100} position={[24, 24.5, -8]} intensity={300} color="red" />
                     </group>
                 </mesh>
