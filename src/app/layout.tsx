@@ -37,8 +37,10 @@ export default function RootLayout({
           card: '!bg-transparent shadow-none',
           header: '!hidden',
           footer: '!mt-0 !hidden',
-          formButtonPrimary: '!bg-[#F4E590] !text-black hover:bg-yellow-600',
-          input: '!border-[#F4E590] !border-2 !bg-[#343434] !text-white',
+          form: '!gap-4',
+          formButtonPrimary: '!bg-[#F4E590] !text-black hover:bg-yellow-600 !rounded-full !py-2.5',
+          formFieldLabel: '!text-[#F4E590]',
+          input: '!border-[#F4E590] !border-4 !bg-[#343434] !text-white !rounded-full !py-4',
         },
 
       }}>

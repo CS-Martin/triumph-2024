@@ -37,11 +37,10 @@ function Scene() {
             />
 
             <OrbitControls
-                enableZoom={true}
                 enablePan={false}
                 minDistance={8}
                 maxDistance={25}
-                target={[0, -10, -120]}
+                target={[0, -8.5, -120]}
                 enableDamping={true}
                 dampingFactor={0.05}
             />
