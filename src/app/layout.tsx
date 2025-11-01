@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/providers/theme.provider";
 import { LoadingProgressProvider } from "@/providers/bprogress.provider";
 import { Toaster } from "@/components/ui/sonner";
 import "@/styles/clerk.css";
+import "@/styles/fireflies.css";
 
 const rosarivo = Rosarivo({
   variable: "--font-rosarivo",
@@ -42,7 +43,6 @@ export default function RootLayout({
           formFieldLabel: '!text-[#F4E590]',
           input: '!border-[#F4E590] !border-4 !bg-[#343434] !text-white !rounded-full !py-4',
         },
-
       }}>
       <html lang="en" suppressHydrationWarning>
         <body
