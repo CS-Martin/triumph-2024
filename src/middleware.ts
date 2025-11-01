@@ -6,12 +6,6 @@ const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)', '/mode
 export default clerkMiddleware(async (auth, req) => {
   const url = req.nextUrl.clone();
 
-  // Redirect root '/' to '/dashboard'
-  if (url.pathname === '/') {
-    url.pathname = '/dashboard';
-    return NextResponse.redirect(url);
-  }
-
   // Protect private routes
   if (!isPublicRoute(req)) {
     await auth.protect();

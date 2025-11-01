@@ -28,10 +28,10 @@ export default function RootLayout({
     <ClerkProvider
       signInUrl={`/sign-in`}
       signUpUrl={`/sign-up`}
-      signInFallbackRedirectUrl={`/dashboard`}
-      signUpFallbackRedirectUrl={`/dashboard`}
-      signUpForceRedirectUrl={`/dashboard`}
-      signInForceRedirectUrl={`/dashboard`}
+      signInFallbackRedirectUrl={`/`}
+      signUpFallbackRedirectUrl={`/`}
+      signUpForceRedirectUrl={`/`}
+      signInForceRedirectUrl={`/`}
       afterSignOutUrl={`/`}
       appearance={{
         elements: {
