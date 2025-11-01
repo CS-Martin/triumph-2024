@@ -250,6 +250,8 @@ export function TriumphModel(props?: Partial<TriumphModelProps>) {
                         {/* Lamp light sources */}
                         <pointLight distance={100} position={[24, 24.5, -8]} intensity={200} color="#DADB5B" />
                         <pointLight distance={100} position={[24, 24.5, -8]} intensity={300} color="red" />
+
+                        <pointLight castShadow position={[0, 30, 15]} intensity={100} color="orange" />
                     </group>
                 </mesh>
                 <mesh

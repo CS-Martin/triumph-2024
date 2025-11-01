@@ -57,9 +57,9 @@ function Scene({
     const defaultPolar = Math.acos(defaultOffset.y / defaultRadius);
     const defaultAzimuth = Math.atan2(defaultOffset.z, defaultOffset.x);
 
-    // Limited orbital movement ranges (±15 degrees for gentler movement)
-    const azimuthRange = Math.PI / 12;
-    const polarRange = Math.PI / 12;
+    // Limited orbital movement ranges (±8 degrees for very subtle movement)
+    const azimuthRange = Math.PI / 10;
+    const polarRange = Math.PI / 10;
     // Zoom in by reducing the radius
     const radius = defaultRadius * 0.25;
 
@@ -136,7 +136,7 @@ function Scene({
             }
 
             // Smooth interpolation to target position (slower for gentler movement)
-            currentPosition.current.lerp(targetPosition.current, 0.002);
+            currentPosition.current.lerp(targetPosition.current, 0.003);
         }
 
         camera.position.copy(currentPosition.current);
