@@ -1,19 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Rosarivo } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/providers/theme.provider";
 import { LoadingProgressProvider } from "@/providers/bprogress.provider";
 import { Toaster } from "@/components/ui/sonner";
+import "@/styles/clerk.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const rosarivo = Rosarivo({
+  variable: "--font-rosarivo",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -34,10 +31,20 @@ export default function RootLayout({
       signUpFallbackRedirectUrl={`/dashboard`}
       signUpForceRedirectUrl={`/dashboard`}
       signInForceRedirectUrl={`/dashboard`}
-      afterSignOutUrl={`/`}>
+      afterSignOutUrl={`/`}
+      appearance={{
+        elements: {
+          card: '!bg-transparent shadow-none',
+          header: '!hidden',
+          footer: '!mt-0 !hidden',
+          formButtonPrimary: '!bg-[#F4E590] !text-black hover:bg-yellow-600',
+          input: '!border-[#F4E590] !border-2 !bg-[#343434] !text-white',
+        },
+
+      }}>
       <html lang="en" suppressHydrationWarning>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${rosarivo.className} ${rosarivo.variable} antialiased`}
         >
           <ThemeProvider
             attribute="class"
