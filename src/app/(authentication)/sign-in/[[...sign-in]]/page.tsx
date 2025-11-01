@@ -3,7 +3,7 @@ import { SignIn } from '@clerk/nextjs'
 
 export default function SignInPage() {
     return (
-        <div className="min-h-screen w-full flex relative overflow-hidden" style={{ backgroundColor: '#131210' }}>
+        <div className="min-h-screen w-full flex relative overflow-hidden" style={{ backgroundColor: '#010100' }}>
             <div className="flex-1 relative overflow-hidden border-l border-purple-500/30">
                 <div className="absolute inset-0">
                     <TriumphScene />
@@ -21,7 +21,7 @@ export default function SignInPage() {
             {/* Clerk Sign-In - Absolutely positioned on the right side */}
             <div className="absolute top-0 right-0 h-full z-20 flex items-center">
                 <div className="pr-8">
-                    {/* <SignIn /> */}
+                    <SignIn />
                 </div>
             </div>
         </div>

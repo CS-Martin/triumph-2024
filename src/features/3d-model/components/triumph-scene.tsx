@@ -10,8 +10,7 @@ export default function TriumphScene() {
         <div className="absolute inset-0 z-10 flex items-center justify-center">
             <Canvas
                 className="w-full h-full"
-                camera={{ position: [0, 5, -105], fov: 50 }}
-                orthographic
+                camera={{ position: [-5, 0, 0], fov: 50 }}
                 gl={{ antialias: true, alpha: true }}
                 shadows
             >
@@ -24,7 +23,6 @@ export default function TriumphScene() {
 }
 
 function Scene() {
-    // OrbitControls will manage the camera automatically based on target
 
     return (
         <group>
@@ -51,7 +49,8 @@ function Scene() {
             {/* Environment for additional ambient lighting */}
             <Environment preset="night" />
 
-            <group position={[0, -15, -120]}>
+            {/* [x, y, z] */}
+            <group position={[-23, -28, -175]}>
                 <TriumphModel />
             </group>
 
