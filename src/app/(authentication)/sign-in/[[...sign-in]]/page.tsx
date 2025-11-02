@@ -31,7 +31,7 @@ export default function SignInPage() {
             {/* 3D Scene - Hidden on mobile, visible on large screens */}
             <div className="hidden lg:flex flex-1 z-10 relative overflow-hidden border-l">
                 <div className="absolute inset-0">
-                    <TriumphScene />
+                    <TriumphScene axes={{ x: -23, y: -28, depth: -175 }} />
                 </div>
             </div>
 

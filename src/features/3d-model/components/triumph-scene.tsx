@@ -5,9 +5,17 @@ import { ContactShadows, Environment } from "@react-three/drei";
 import { TriumphModel } from "@/features/3d-model/components/triumph-model";
 import React, { Suspense, useState, useRef, useEffect } from "react";
 import * as THREE from "three";
-import Fireflies from "@/components/ui/fireflies";
 
-export default function TriumphScene() {
+interface TriumphModelAxesProps {
+
+    axes: {
+        x: number;
+        y: number;
+        depth: number;
+    }
+}
+
+export default function TriumphScene({ axes }: TriumphModelAxesProps) {
     const [isHovered, setIsHovered] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
 
@@ -15,7 +23,7 @@ export default function TriumphScene() {
         <div className="absolute inset-0 z-10 flex items-center justify-center">
             <Canvas
                 className="w-full h-full"
-                camera={{ position: [-20, -5, -60], fov: 50 }}
+                camera={{ fov: 50 }}
                 gl={{ antialias: true, alpha: true }}
                 shadows
                 onPointerEnter={() => setIsHovered(true)}
@@ -33,7 +41,7 @@ export default function TriumphScene() {
                 }}
             >
                 <Suspense fallback={null}>
-                    <Scene isHovered={isHovered} mousePosition={mousePosition} />
+                    <Scene isHovered={isHovered} mousePosition={mousePosition} axes={axes} />
                 </Suspense>
             </Canvas>
         </div>
@@ -42,10 +50,12 @@ export default function TriumphScene() {
 
 function Scene({
     isHovered,
-    mousePosition
+    mousePosition,
+    axes
 }: {
     isHovered: boolean;
     mousePosition: { x: number; y: number };
+    axes: { x: number; y: number; depth: number };
 }) {
     const { camera } = useThree();
     const target = new THREE.Vector3(0, -8.5, -120);
@@ -146,20 +156,13 @@ function Scene({
     return (
         <group>
             {/* Ambient light so objects are visible even without direct light */}
-            <ambientLight intensity={0.2} />
-
-            {/* Directional light to provide some general illumination */}
-            <directionalLight
-                position={[5, 5, 5]}
-                intensity={0.3}
-                castShadow={false}
-            />
+            <ambientLight intensity={0.3} color="white" />
 
             {/* Environment for additional ambient lighting */}
             <Environment preset="night" />
 
             {/* [x, y, z] */}
-            <group position={[-23, -28, -175]}>
+            <group position={[axes.x, axes.y, axes.depth]}>
                 <TriumphModel />
             </group>
 
@@ -175,3 +178,4 @@ function Scene({
         </group>
     );
 }
+
