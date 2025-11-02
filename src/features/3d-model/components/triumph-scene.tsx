@@ -7,6 +7,7 @@ import React, { Suspense, useState, useRef, useEffect } from "react";
 import * as THREE from "three";
 import { gsap } from "gsap";
 import GoBackButton from "./ui/go-back-button";
+import { useCameraStore } from "../stores/camera-store";
 
 interface TriumphModelAxesProps {
 
@@ -20,8 +21,8 @@ interface TriumphModelAxesProps {
 export default function TriumphScene({ axes }: TriumphModelAxesProps) {
     const [isHovered, setIsHovered] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
-    const [isFocused, setIsFocused] = useState(false);
-    const resetFocusRef = useRef<(() => void) | null>(null);
+    const isFocused = useCameraStore((state) => state.isFocused);
+    const resetFocus = useCameraStore((state) => state.resetFocus);
 
     return (
         <div className="absolute inset-0 z-10 flex items-center justify-center">
@@ -49,19 +50,12 @@ export default function TriumphScene({ axes }: TriumphModelAxesProps) {
                         isHovered={isHovered}
                         mousePosition={mousePosition}
                         axes={axes}
-                        setIsFocused={setIsFocused}
-                        resetFocusRef={resetFocusRef}
                     />
                 </Suspense>
             </Canvas>
             <GoBackButton
                 isVisible={isFocused}
-                onClose={() => {
-                    if (resetFocusRef.current) {
-                        resetFocusRef.current();
-                        setIsFocused(false);
-                    }
-                }}
+                onClose={resetFocus}
             />
         </div>
     );
@@ -70,21 +64,18 @@ export default function TriumphScene({ axes }: TriumphModelAxesProps) {
 function Scene({
     isHovered,
     mousePosition,
-    axes,
-    setIsFocused: setParentIsFocused,
-    resetFocusRef
+    axes
 }: {
     isHovered: boolean;
     mousePosition: { x: number; y: number };
     axes: { x: number; y: number; depth: number };
-    setIsFocused: (value: boolean) => void;
-    resetFocusRef: React.MutableRefObject<(() => void) | null>;
 }) {
     const { camera } = useThree();
-    const [focusedObjectPosition, setFocusedObjectPosition] = useState<THREE.Vector3 | null>(null);
-    const [isFocused, setIsFocused] = useState(false);
-    const focusTarget = useRef<THREE.Vector3 | null>(null);
-    const focusCameraPosition = useRef<THREE.Vector3 | null>(null);
+    const isFocused = useCameraStore((state) => state.isFocused);
+    const isResetting = useCameraStore((state) => state.isResetting);
+    const focusTarget = useCameraStore((state) => state.focusTarget);
+    const focusCameraPosition = useCameraStore((state) => state.focusCameraPosition);
+    const clearFocusState = useCameraStore((state) => state.clearFocusState);
     const focusAnimation = useRef<gsap.core.Tween | null>(null);
 
     const target = new THREE.Vector3(0, -8.5, -120);
@@ -120,95 +111,135 @@ function Scene({
     const targetPosition = useRef(zoomedDefaultPosition.clone());
     const currentPosition = useRef(startPosition.clone());
 
-    // Function to focus on an object
-    const focusOnObject = (worldPosition: THREE.Vector3) => {
-        setIsFocused(true);
-        setParentIsFocused(true);
-        setFocusedObjectPosition(worldPosition.clone());
-        focusTarget.current = worldPosition.clone();
-
-        // Calculate camera position relative to the object (closer and at an angle)
-        // Position camera at a comfortable distance from the object
-        const offset = new THREE.Vector3(-0.3, 0.2, 1).normalize().multiplyScalar(15.5);
-        focusCameraPosition.current = worldPosition.clone().add(offset);
-
-        // Animate camera to focus position
-        if (focusAnimation.current) {
-            focusAnimation.current.kill();
-        }
-
-        const startPos = camera.position.clone();
-        focusAnimation.current = gsap.to({ x: startPos.x, y: startPos.y, z: startPos.z }, {
-            x: focusCameraPosition.current!.x,
-            y: focusCameraPosition.current!.y,
-            z: focusCameraPosition.current!.z,
-            duration: 1.2,
-            ease: "power2.inOut",
-            onUpdate: function () {
-                camera.position.set(this.targets()[0].x, this.targets()[0].y, this.targets()[0].z);
-            }
-        });
-    };
-
-    const resetFocus = () => {
-        if (focusAnimation.current) {
-            focusAnimation.current.kill();
-        }
-
-        // First, zoom out smoothly while still looking at the object
-        const startPos = camera.position.clone();
-        const currentTarget = focusTarget.current || startPos;
-
-        // Calculate a zoomed-out position in the same direction as current view
-        const currentDirection = startPos.clone().sub(currentTarget).normalize();
-        const zoomedOutDistance = 30; // Zoom out to a comfortable distance
-        const intermediateZoomPos = currentTarget.clone().add(
-            currentDirection.multiplyScalar(zoomedOutDistance)
-        );
-
-        // Animate zoom out first, then pan to default view
-        focusAnimation.current = gsap.to({ x: startPos.x, y: startPos.y, z: startPos.z }, {
-            x: intermediateZoomPos.x,
-            y: intermediateZoomPos.y,
-            z: intermediateZoomPos.z,
-            duration: 0.8,
-            ease: "power2.out",
-            onUpdate: function () {
-                camera.position.set(this.targets()[0].x, this.targets()[0].y, this.targets()[0].z);
-                // Continue looking at the object while zooming out
-                if (focusTarget.current) {
-                    camera.lookAt(focusTarget.current);
-                }
-            },
-            onComplete: () => {
-                // After zooming out, smoothly transition to default view
-                const midPos = camera.position.clone();
-                gsap.to({ x: midPos.x, y: midPos.y, z: midPos.z }, {
-                    x: zoomedDefaultPosition.x,
-                    y: zoomedDefaultPosition.y,
-                    z: zoomedDefaultPosition.z,
-                    duration: 1.0,
-                    ease: "power2.inOut",
-                    onUpdate: function () {
-                        camera.position.set(this.targets()[0].x, this.targets()[0].y, this.targets()[0].z);
-                        camera.lookAt(target);
-                    },
-                    onComplete: () => {
-                        // Clear focus state after animation completes
-                        setIsFocused(false);
-                        setParentIsFocused(false);
-                        setFocusedObjectPosition(null);
-                        focusTarget.current = null;
-                    }
-                });
-            }
-        });
-    };
-
-    // Expose resetFocus to parent component
+    // Handle focus changes from store
     useEffect(() => {
-        resetFocusRef.current = resetFocus;
-    }, [resetFocusRef, resetFocus]);
+        if (isFocused && focusTarget && focusCameraPosition) {
+            // Clear reset animation flag when new focus starts
+            isResettingAnimation.current = false;
+
+            // Animate camera to focus position
+            if (focusAnimation.current) {
+                focusAnimation.current.kill();
+            }
+
+            const startPos = camera.position.clone();
+            focusAnimation.current = gsap.to({ x: startPos.x, y: startPos.y, z: startPos.z }, {
+                x: focusCameraPosition.x,
+                y: focusCameraPosition.y,
+                z: focusCameraPosition.z,
+                duration: 1.2,
+                ease: "power2.inOut",
+                onUpdate: function () {
+                    camera.position.set(this.targets()[0].x, this.targets()[0].y, this.targets()[0].z);
+                }
+            });
+        }
+    }, [isFocused, focusTarget, focusCameraPosition, camera]);
+
+    // Track if reset animation is in progress - use ref to avoid state dependency issues
+    const isResettingAnimation = useRef(false);
+    const savedResetTarget = useRef<THREE.Vector3 | null>(null);
+    const prevIsResetting = useRef(false);
+
+    // Save focus target when focused
+    useEffect(() => {
+        if (isFocused && focusTarget) {
+            savedResetTarget.current = focusTarget.clone();
+        }
+    }, [isFocused, focusTarget]);
+
+    // Handle reset focus - detect when reset is triggered via Zustand, but execute independently
+    useEffect(() => {
+        // Detect reset trigger: isResetting changed from false to true
+        const resetJustTriggered = !prevIsResetting.current && isResetting;
+
+        if (resetJustTriggered && !isResettingAnimation.current) {
+            // Reset was triggered, animate zoom out
+            isResettingAnimation.current = true;
+
+            if (focusAnimation.current) {
+                focusAnimation.current.kill();
+            }
+
+            // Use saved target (saved when focused)
+            const currentFocusTarget = savedResetTarget.current;
+            if (!currentFocusTarget) {
+                // If no target, just clear state immediately
+                isResettingAnimation.current = false;
+                clearFocusState();
+                prevIsResetting.current = isResetting;
+                return;
+            }
+
+            const startPos = camera.position.clone();
+
+            // Calculate a zoomed-out position in the same direction as current view
+            const currentDirection = startPos.clone().sub(currentFocusTarget).normalize();
+            const zoomedOutDistance = 30; // Zoom out to a comfortable distance
+            const intermediateZoomPos = currentFocusTarget.clone().add(
+                currentDirection.multiplyScalar(zoomedOutDistance)
+            );
+
+            // Animate zoom out first, then pan to default view
+            focusAnimation.current = gsap.to({ x: startPos.x, y: startPos.y, z: startPos.z }, {
+                x: intermediateZoomPos.x,
+                y: intermediateZoomPos.y,
+                z: intermediateZoomPos.z,
+                duration: 0.5,
+                ease: "power2.out",
+                onUpdate: function () {
+                    camera.position.set(this.targets()[0].x, this.targets()[0].y, this.targets()[0].z);
+
+                    // Continue looking at the object while zooming out
+                    camera.lookAt(currentFocusTarget);
+                },
+                onComplete: () => {
+                    // After zooming out, smoothly transition to default view
+                    const midPos = camera.position.clone();
+                    gsap.to({ x: midPos.x, y: midPos.y, z: midPos.z }, {
+                        x: zoomedDefaultPosition.x,
+                        y: zoomedDefaultPosition.y,
+                        z: zoomedDefaultPosition.z,
+                        duration: 1,
+                        ease: "power2.inOut",
+                        onUpdate: function () {
+                            const posX = this.targets()[0].x;
+                            const posY = this.targets()[0].y;
+                            const posZ = this.targets()[0].z;
+
+                            camera.position.set(posX, posY, posZ);
+                            camera.lookAt(target);
+
+                            // Continuously sync currentPosition during animation to prevent mismatch
+                            currentPosition.current.set(posX, posY, posZ);
+                            targetPosition.current.set(posX, posY, posZ);
+                        },
+                        onComplete: () => {
+                            // Ensure camera is exactly at the target position to prevent stutter
+                            camera.position.copy(zoomedDefaultPosition);
+                            camera.lookAt(target);
+
+                            // Final sync to ensure exact match
+                            currentPosition.current.copy(zoomedDefaultPosition);
+                            targetPosition.current.copy(zoomedDefaultPosition);
+
+                            // Clear focus state after animation completes
+                            clearFocusState();
+
+                            // Clear saved target since we no longer need it
+                            savedResetTarget.current = null;
+
+                            // Don't clear isResettingAnimation here - keep it true to prevent stutter
+                            // It will be cleared automatically when a new focus starts
+                            // This prevents useFrame from taking control and causing position conflicts
+                        }
+                    });
+                }
+            });
+        }
+
+        prevIsResetting.current = isResetting;
+    }, [isResetting, zoomedDefaultPosition, target, camera, clearFocusState]);
 
     // Mark model as loaded after a brief delay to ensure it's fully rendered
     useEffect(() => {
@@ -227,9 +258,26 @@ function Scene({
             return;
         }
 
+        // If resetting, let GSAP animation control camera position - don't interfere
+        // Only update lookAt, GSAP handles position updates
+        if (isResettingAnimation.current) {
+            // If no saved target and not focused, reset animation is complete
+            // Allow normal operation to resume
+            if (!savedResetTarget.current && !focusTarget) {
+                isResettingAnimation.current = false;
+            } else {
+                // Use saved target if available, otherwise use focusTarget
+                const lookAtTarget = savedResetTarget.current || focusTarget;
+                if (lookAtTarget) {
+                    camera.lookAt(lookAtTarget);
+                }
+                return;
+            }
+        }
+
         // If focused on an object, always look at it
-        if (isFocused && focusTarget.current) {
-            camera.lookAt(focusTarget.current);
+        if (isFocused && focusTarget) {
+            camera.lookAt(focusTarget);
             return;
         }
 
@@ -288,11 +336,7 @@ function Scene({
 
             {/* [x, y, z] */}
             <group position={[axes.x, axes.y, axes.depth]}>
-                <TriumphModel
-                    focusOnObject={focusOnObject}
-                    resetFocus={resetFocus}
-                    isFocused={isFocused}
-                />
+                <TriumphModel />
             </group>
 
             <ContactShadows

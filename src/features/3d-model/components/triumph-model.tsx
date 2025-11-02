@@ -75,14 +75,7 @@ type TriumphModelProps = GLTF & {
     }
 }
 
-export function TriumphModel(
-    props?: Partial<TriumphModelProps> & {
-        focusOnObject?: (position: THREE.Vector3) => void
-        resetFocus?: () => void
-        isFocused?: boolean
-    }
-) {
-    const { focusOnObject, resetFocus, isFocused } = props || {}
+export function TriumphModel(props?: Partial<TriumphModelProps>) {
     const gltfData = useGLTF('/model/Triumph2024.glb') as unknown as TriumphModelProps
     const nodes = gltfData.nodes
     const materials = gltfData.materials
@@ -216,9 +209,6 @@ export function TriumphModel(
                 <Chair
                     nodes={{ Chair_low: nodes.Chair_low }}
                     materials={{ Chair: materials.Chair }}
-                    focusOnObject={focusOnObject}
-                    resetFocus={resetFocus}
-                    isFocused={isFocused}
                 />
                 <mesh
                     name="Drawer_low"
@@ -245,9 +235,6 @@ export function TriumphModel(
                 <Phonograph
                     nodes={{ Phonograph_low: nodes.Phonograph_low }}
                     materials={{ Phonograph: materials.Phonograph }}
-                    focusOnObject={focusOnObject}
-                    resetFocus={resetFocus}
-                    isFocused={isFocused}
                 />
                 <mesh
                     name="Table_low"

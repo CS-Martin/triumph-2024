@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import * as THREE from "three"
 import { gsap } from "gsap"
 import { useFrame } from "@react-three/fiber"
+import { useCameraStore } from "../../stores/camera-store"
 
 type ChairProps = {
     nodes: {
@@ -10,12 +11,11 @@ type ChairProps = {
     materials: {
         Chair: THREE.MeshStandardMaterial
     }
-    focusOnObject?: (position: THREE.Vector3) => void
-    resetFocus?: () => void
-    isFocused?: boolean
 }
 
-export default function Chair({ nodes, materials, focusOnObject, resetFocus, isFocused }: ChairProps) {
+export default function Chair({ nodes, materials }: ChairProps) {
+    const focusOnObject = useCameraStore((state) => state.focusOnObject)
+    const isFocused = useCameraStore((state) => state.isFocused && state.focusedObjectId === 'chair')
     const chairRef = useRef<THREE.Mesh>(null)
     const [isHovered, setIsHovered] = useState(false)
     const scaleAnimation = useRef<gsap.core.Tween | null>(null)
@@ -112,7 +112,7 @@ export default function Chair({ nodes, materials, focusOnObject, resetFocus, isF
                     box.getCenter(center) // This already gives world coordinates
 
                     // Focus camera on the object center
-                    focusOnObject(center)
+                    focusOnObject('chair', center)
 
                     // Keep hover state when focused
                     setIsHovered(true)

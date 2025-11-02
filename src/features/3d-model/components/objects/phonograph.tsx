@@ -1,11 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 import * as THREE from "three"
-import { useGLTF } from "@react-three/drei"
-import { GLTF } from "three-stdlib"
 import { gsap } from "gsap"
-import { useRouter } from "next/navigation"
 import { useFrame } from "@react-three/fiber"
-import { useThree } from "@react-three/fiber"
+import { useCameraStore } from "../../stores/camera-store"
 
 type PhonographProps = {
     nodes: {
@@ -14,15 +11,13 @@ type PhonographProps = {
     materials: {
         Phonograph: THREE.MeshStandardMaterial
     }
-    focusOnObject?: (position: THREE.Vector3) => void
-    resetFocus?: () => void
-    isFocused?: boolean
 }
-export default function Phonograph({ nodes, materials, focusOnObject, resetFocus, isFocused }: PhonographProps) {
+export default function Phonograph({ nodes, materials }: PhonographProps) {
+    const focusOnObject = useCameraStore((state) => state.focusOnObject)
+    const isFocused = useCameraStore((state) => state.isFocused && state.focusedObjectId === 'phonograph')
     const phonographRef = useRef<THREE.Mesh>(null)
     const [isHovered, setIsHovered] = useState(false)
     const scaleAnimation = useRef<gsap.core.Tween | null>(null)
-    const router = useRouter()
     const floatingOffset = useRef(0)
     const baseLocalY = useRef<number>(0)
     const hasStoredBasePosition = useRef(false)
@@ -115,7 +110,7 @@ export default function Phonograph({ nodes, materials, focusOnObject, resetFocus
                     box.getCenter(center) // This already gives world coordinates
 
                     // Focus camera on the object center
-                    focusOnObject(center)
+                    focusOnObject('phonograph', center)
 
                     // Keep hover state when focused
                     setIsHovered(true)
