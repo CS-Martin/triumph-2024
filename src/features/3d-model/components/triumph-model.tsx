@@ -6,6 +6,7 @@ import * as THREE from 'three'
 import React, { useEffect, useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
+import { Fog } from 'three'
 
 type TriumphModelProps = GLTF & {
     nodes: {
@@ -348,6 +349,7 @@ export function TriumphModel(props?: Partial<TriumphModelProps>) {
                             opacity={0.3}
                         />
                     </mesh>
+
                 </group>
             </group>
         </group>
