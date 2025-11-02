@@ -129,7 +129,7 @@ function Scene({
 
         // Calculate camera position relative to the object (closer and at an angle)
         // Position camera at a comfortable distance from the object
-        const offset = new THREE.Vector3(0.4, 0.2, 0.6).normalize().multiplyScalar(15.5);
+        const offset = new THREE.Vector3(-0.3, 0.2, 1).normalize().multiplyScalar(15.5);
         focusCameraPosition.current = worldPosition.clone().add(offset);
 
         // Animate camera to focus position
@@ -151,25 +151,56 @@ function Scene({
     };
 
     const resetFocus = () => {
-        setIsFocused(false);
-        setParentIsFocused(false);
-        setFocusedObjectPosition(null);
-        focusTarget.current = null;
-
         if (focusAnimation.current) {
             focusAnimation.current.kill();
         }
 
-        // Animate camera back to default position
+        // First, zoom out smoothly while still looking at the object
         const startPos = camera.position.clone();
+        const currentTarget = focusTarget.current || startPos;
+
+        // Calculate a zoomed-out position in the same direction as current view
+        const currentDirection = startPos.clone().sub(currentTarget).normalize();
+        const zoomedOutDistance = 30; // Zoom out to a comfortable distance
+        const intermediateZoomPos = currentTarget.clone().add(
+            currentDirection.multiplyScalar(zoomedOutDistance)
+        );
+
+        // Animate zoom out first, then pan to default view
         focusAnimation.current = gsap.to({ x: startPos.x, y: startPos.y, z: startPos.z }, {
-            x: zoomedDefaultPosition.x,
-            y: zoomedDefaultPosition.y,
-            z: zoomedDefaultPosition.z,
-            duration: 1.2,
-            ease: "power2.inOut",
+            x: intermediateZoomPos.x,
+            y: intermediateZoomPos.y,
+            z: intermediateZoomPos.z,
+            duration: 0.8,
+            ease: "power2.out",
             onUpdate: function () {
                 camera.position.set(this.targets()[0].x, this.targets()[0].y, this.targets()[0].z);
+                // Continue looking at the object while zooming out
+                if (focusTarget.current) {
+                    camera.lookAt(focusTarget.current);
+                }
+            },
+            onComplete: () => {
+                // After zooming out, smoothly transition to default view
+                const midPos = camera.position.clone();
+                gsap.to({ x: midPos.x, y: midPos.y, z: midPos.z }, {
+                    x: zoomedDefaultPosition.x,
+                    y: zoomedDefaultPosition.y,
+                    z: zoomedDefaultPosition.z,
+                    duration: 1.0,
+                    ease: "power2.inOut",
+                    onUpdate: function () {
+                        camera.position.set(this.targets()[0].x, this.targets()[0].y, this.targets()[0].z);
+                        camera.lookAt(target);
+                    },
+                    onComplete: () => {
+                        // Clear focus state after animation completes
+                        setIsFocused(false);
+                        setParentIsFocused(false);
+                        setFocusedObjectPosition(null);
+                        focusTarget.current = null;
+                    }
+                });
             }
         });
     };
