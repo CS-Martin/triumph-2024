@@ -5,6 +5,8 @@ import { ContactShadows, Environment } from "@react-three/drei";
 import { TriumphModel } from "@/features/3d-model/components/triumph-model";
 import React, { Suspense, useState, useRef, useEffect } from "react";
 import * as THREE from "three";
+import { gsap } from "gsap";
+import GoBackButton from "./ui/go-back-button";
 
 interface TriumphModelAxesProps {
 
@@ -18,6 +20,8 @@ interface TriumphModelAxesProps {
 export default function TriumphScene({ axes }: TriumphModelAxesProps) {
     const [isHovered, setIsHovered] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
+    const [isFocused, setIsFocused] = useState(false);
+    const resetFocusRef = useRef<(() => void) | null>(null);
 
     return (
         <div className="absolute inset-0 z-10 flex items-center justify-center">
@@ -41,9 +45,24 @@ export default function TriumphScene({ axes }: TriumphModelAxesProps) {
                 }}
             >
                 <Suspense fallback={null}>
-                    <Scene isHovered={isHovered} mousePosition={mousePosition} axes={axes} />
+                    <Scene
+                        isHovered={isHovered}
+                        mousePosition={mousePosition}
+                        axes={axes}
+                        setIsFocused={setIsFocused}
+                        resetFocusRef={resetFocusRef}
+                    />
                 </Suspense>
             </Canvas>
+            <GoBackButton
+                isVisible={isFocused}
+                onClose={() => {
+                    if (resetFocusRef.current) {
+                        resetFocusRef.current();
+                        setIsFocused(false);
+                    }
+                }}
+            />
         </div>
     );
 }
@@ -51,13 +70,23 @@ export default function TriumphScene({ axes }: TriumphModelAxesProps) {
 function Scene({
     isHovered,
     mousePosition,
-    axes
+    axes,
+    setIsFocused: setParentIsFocused,
+    resetFocusRef
 }: {
     isHovered: boolean;
     mousePosition: { x: number; y: number };
     axes: { x: number; y: number; depth: number };
+    setIsFocused: (value: boolean) => void;
+    resetFocusRef: React.MutableRefObject<(() => void) | null>;
 }) {
     const { camera } = useThree();
+    const [focusedObjectPosition, setFocusedObjectPosition] = useState<THREE.Vector3 | null>(null);
+    const [isFocused, setIsFocused] = useState(false);
+    const focusTarget = useRef<THREE.Vector3 | null>(null);
+    const focusCameraPosition = useRef<THREE.Vector3 | null>(null);
+    const focusAnimation = useRef<gsap.core.Tween | null>(null);
+
     const target = new THREE.Vector3(0, -8.5, -120);
     const defaultPosition = new THREE.Vector3(-10, 0, 0);
 
@@ -91,6 +120,65 @@ function Scene({
     const targetPosition = useRef(zoomedDefaultPosition.clone());
     const currentPosition = useRef(startPosition.clone());
 
+    // Function to focus on an object
+    const focusOnObject = (worldPosition: THREE.Vector3) => {
+        setIsFocused(true);
+        setParentIsFocused(true);
+        setFocusedObjectPosition(worldPosition.clone());
+        focusTarget.current = worldPosition.clone();
+
+        // Calculate camera position relative to the object (closer and at an angle)
+        // Position camera at a comfortable distance from the object
+        const offset = new THREE.Vector3(0.4, 0.2, 0.6).normalize().multiplyScalar(15.5);
+        focusCameraPosition.current = worldPosition.clone().add(offset);
+
+        // Animate camera to focus position
+        if (focusAnimation.current) {
+            focusAnimation.current.kill();
+        }
+
+        const startPos = camera.position.clone();
+        focusAnimation.current = gsap.to({ x: startPos.x, y: startPos.y, z: startPos.z }, {
+            x: focusCameraPosition.current!.x,
+            y: focusCameraPosition.current!.y,
+            z: focusCameraPosition.current!.z,
+            duration: 1.2,
+            ease: "power2.inOut",
+            onUpdate: function () {
+                camera.position.set(this.targets()[0].x, this.targets()[0].y, this.targets()[0].z);
+            }
+        });
+    };
+
+    const resetFocus = () => {
+        setIsFocused(false);
+        setParentIsFocused(false);
+        setFocusedObjectPosition(null);
+        focusTarget.current = null;
+
+        if (focusAnimation.current) {
+            focusAnimation.current.kill();
+        }
+
+        // Animate camera back to default position
+        const startPos = camera.position.clone();
+        focusAnimation.current = gsap.to({ x: startPos.x, y: startPos.y, z: startPos.z }, {
+            x: zoomedDefaultPosition.x,
+            y: zoomedDefaultPosition.y,
+            z: zoomedDefaultPosition.z,
+            duration: 1.2,
+            ease: "power2.inOut",
+            onUpdate: function () {
+                camera.position.set(this.targets()[0].x, this.targets()[0].y, this.targets()[0].z);
+            }
+        });
+    };
+
+    // Expose resetFocus to parent component
+    useEffect(() => {
+        resetFocusRef.current = resetFocus;
+    }, [resetFocusRef, resetFocus]);
+
     // Mark model as loaded after a brief delay to ensure it's fully rendered
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -105,6 +193,12 @@ function Scene({
         if (!modelLoaded.current) {
             camera.position.copy(startPosition);
             camera.lookAt(target);
+            return;
+        }
+
+        // If focused on an object, always look at it
+        if (isFocused && focusTarget.current) {
+            camera.lookAt(focusTarget.current);
             return;
         }
 
@@ -163,7 +257,11 @@ function Scene({
 
             {/* [x, y, z] */}
             <group position={[axes.x, axes.y, axes.depth]}>
-                <TriumphModel />
+                <TriumphModel
+                    focusOnObject={focusOnObject}
+                    resetFocus={resetFocus}
+                    isFocused={isFocused}
+                />
             </group>
 
             <ContactShadows
