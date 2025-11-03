@@ -7,6 +7,8 @@ import React, { Suspense, useState, useRef, useEffect } from "react";
 import * as THREE from "three";
 import { gsap } from "gsap";
 import GoBackButton from "./ui/go-back-button";
+import ObjectTitle from "./ui/object-title";
+import ObjectActionButton from "./ui/object-action-button";
 import { useCameraStore } from "../stores/camera-store";
 
 interface TriumphModelAxesProps {
@@ -57,6 +59,8 @@ export default function TriumphScene({ axes }: TriumphModelAxesProps) {
                 isVisible={isFocused}
                 onClose={resetFocus}
             />
+            <ObjectTitle />
+            <ObjectActionButton />
         </div>
     );
 }

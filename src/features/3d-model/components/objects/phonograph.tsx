@@ -14,6 +14,7 @@ type PhonographProps = {
 }
 export default function Phonograph({ nodes, materials }: PhonographProps) {
     const focusOnObject = useCameraStore((state) => state.focusOnObject)
+    const setHoveredObject = useCameraStore((state) => state.setHoveredObject)
     const isFocused = useCameraStore((state) => state.isFocused && state.focusedObjectId === 'phonograph')
     const phonographRef = useRef<THREE.Mesh>(null)
     const [isHovered, setIsHovered] = useState(false)
@@ -92,11 +93,13 @@ export default function Phonograph({ nodes, materials }: PhonographProps) {
             onPointerOver={(e) => {
                 e.stopPropagation()
                 setIsHovered(true)
+                setHoveredObject('phonograph')
                 document.body.style.cursor = 'pointer'
             }}
             onPointerOut={(e) => {
                 e.stopPropagation()
                 setIsHovered(false)
+                setHoveredObject(null)
                 document.body.style.cursor = 'auto'
             }}
             onClick={(e) => {

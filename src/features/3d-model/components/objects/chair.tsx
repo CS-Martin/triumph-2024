@@ -15,6 +15,7 @@ type ChairProps = {
 
 export default function Chair({ nodes, materials }: ChairProps) {
     const focusOnObject = useCameraStore((state) => state.focusOnObject)
+    const setHoveredObject = useCameraStore((state) => state.setHoveredObject)
     const isFocused = useCameraStore((state) => state.isFocused && state.focusedObjectId === 'chair')
     const chairRef = useRef<THREE.Mesh>(null)
     const [isHovered, setIsHovered] = useState(false)
@@ -94,11 +95,13 @@ export default function Chair({ nodes, materials }: ChairProps) {
             onPointerOver={(e) => {
                 e.stopPropagation()
                 setIsHovered(true)
+                setHoveredObject('chair')
                 document.body.style.cursor = 'pointer'
             }}
             onPointerOut={(e) => {
                 e.stopPropagation()
                 setIsHovered(false)
+                setHoveredObject(null)
                 document.body.style.cursor = 'auto'
             }}
             onClick={(e) => {
