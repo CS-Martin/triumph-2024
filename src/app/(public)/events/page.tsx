@@ -67,7 +67,7 @@ const events = [
                 description: "Millions of devotees join the procession, many barefoot, as an act of penitence, thanksgiving, and devotion.",
                 imageClassName: "h-[50%]",
                 titleClassName: "",
-                containerClassName: "2xl:mt-30"
+                containerClassName: "mt-20 2xl:mt-30"
             },
             {
                 image: "/events/frame5.webp",
@@ -76,7 +76,7 @@ const events = [
                 description: "Viva la Virgen! The Peñafrancia Fiesta unites Bicolanos and devotees from all over in a vibrant celebration of faith, culture, and devotion to Our Lady of Peñafrancia.",
                 imageClassName: "h-[50%]",
                 titleClassName: "",
-                containerClassName: "2xl:mt-50"
+                containerClassName: "mt-35 2xl:mt-50"
             },
             {
                 image: "/events/frame6.webp",
@@ -85,7 +85,7 @@ const events = [
                 description: "Takes learning outside the classroom—through talks, workshops, and experiences that open minds, spark conversations, and inspire action.",
                 imageClassName: "h-[50%]",
                 titleClassName: "",
-                containerClassName: "2xl:mt-10"
+                containerClassName: "mt-20 2xl:mt-10"
             }
         ]
     },
@@ -105,7 +105,7 @@ const events = [
                 description: "Honoring the Jesuit missionary spirit of courage, faith, and service that continues to inspire Ateneans today.",
                 imageClassName: "h-[50%]",
                 titleClassName: "",
-                containerClassName: "2xl:mt-50"
+                containerClassName: "mt-35 2xl:mt-50"
             },
             {
                 image: "/events/frame8.webp",
@@ -114,7 +114,7 @@ const events = [
                 description: "Where orgs bring the campus to life with booths, games, and performances, all while welcoming new members into their families.",
                 imageClassName: "h-[50%]",
                 titleClassName: "",
-                containerClassName: "2xl:mt-10"
+                containerClassName: "mt-10 2xl:mt-10"
             },
             {
                 image: "/events/frame9.webp",
@@ -123,7 +123,7 @@ const events = [
                 description: "Ateneo’s annual bloodletting activity that embodies the spirit of generosity and solidarity. Through this initiative, students, faculty, and staff come together to donate blood and help save lives—living out the Atenean value of being men and women for others.",
                 imageClassName: "h-[50%]",
                 titleClassName: "",
-                containerClassName: "2xl:mt-40"
+                containerClassName: "mt-20 2xl:mt-40"
             }
         ]
     },
@@ -156,19 +156,23 @@ export default function EventsPage() {
         }
         if (screenSize < 768) {
             // Mobile
-            return 195
+            return 196
         }
         if (screenSize >= 768 && screenSize < 1024) {
             // Tablet
-            return 170
+            return 130
         }
         if (screenSize >= 1024 && screenSize < 1280) {
             // Small Laptop
+            return 124
+        }
+        if (screenSize >= 1280 && screenSize < 1536) {
+            // Large Laptop
             return 150
         }
-        if (screenSize >= 1280) {
+        if (screenSize >= 1536) {
             // Default Laptop
-            return 150
+            return 102
         }
         // Large Desktop (default)
         return 100
