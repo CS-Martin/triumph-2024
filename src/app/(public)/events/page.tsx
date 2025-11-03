@@ -26,25 +26,31 @@ const events = [
         },
         eventStatues: [
             {
-                image: "/images/event-statue-1.jpg",
+                image: "/events/frame1.webp",
                 title: "Orsem",
                 link: "/events/1",
-                description: 'Ateneo’s vibrant welcome tradition. Where freshies are introduced to campus life, Atenean culture, and the spirit of community through cheers, performances, and unforgettable memories.',
-                className: ""
+                description: 'Ateneo vibrant welcome tradition. Where freshies are introduced to campus life, Atenean culture, and the spirit of community through cheers, performances, and unforgettable memories.',
+                imageClassName: "h-[40%]",
+                titleClassName: "",
+                containerClassName: ""
             },
             {
-                image: "/images/event-statue-2.jpg",
-                title: "Event Statue 2",
+                image: "/events/frame2.webp",
+                title: "St. Ignatius Day",
                 link: "/events/2",
-                description: 'A symbol of resilience and hope, the Lamplighter statue commemorates the sacrifices made by the fallen during World War I. Its presence reminds us of the importance of remembering and honoring those who have served and sacrificed for our freedom.',
-                className: ""
+                description: `The feast of our founder, St. Ignatius of Loyola. A day of faith, fun, and community, filled with Masses, performances, and Ignatian spirit all around campus.`,
+                imageClassName: "h-[55%]",
+                titleClassName: "",
+                containerClassName: ""
             },
             {
-                image: "/images/event-statue-3.jpg",
-                title: "Event Statue 3",
+                image: "/events/frame3.webp",
+                title: "Mass of the Holy Spirit",
                 link: "/events/3",
-                description: 'A symbol of resilience and hope, the Lamplighter statue commemorates the sacrifices made by the fallen during World War I. Its presence reminds us of the importance of remembering and honoring those who have served and sacrificed for our freedom.',
-                className: ""
+                description: `Coming together as one Ateneo community to pray for wisdom, courage, and grace for the months ahead.`,
+                imageClassName: "h-[40%]",
+                titleClassName: "",
+                containerClassName: ""
             }
         ]
     },
@@ -63,21 +69,27 @@ const events = [
                 title: "Event Statue 4",
                 link: "/events/4",
                 description: 'A symbol of resilience and hope, the Lamplighter statue commemorates the sacrifices made by the fallen during World War I. Its presence reminds us of the importance of remembering and honoring those who have served and sacrificed for our freedom.',
-                className: ""
+                imageClassName: "",
+                titleClassName: "",
+                containerClassName: "justify-start"
             },
             {
                 image: "/images/event-statue-5.jpg",
                 title: "Event Statue 5",
                 link: "/events/5",
                 description: 'A symbol of resilience and hope, the Lamplighter statue commemorates the sacrifices made by the fallen during World War I. Its presence reminds us of the importance of remembering and honoring those who have served and sacrificed for our freedom.',
-                className: ""
+                imageClassName: "",
+                titleClassName: "",
+                containerClassName: "justify-end"
             },
             {
                 image: "/images/event-statue-6.jpg",
                 title: "Event Statue 6",
                 link: "/events/6",
                 description: 'A symbol of resilience and hope, the Lamplighter statue commemorates the sacrifices made by the fallen during World War I. Its presence reminds us of the importance of remembering and honoring those who have served and sacrificed for our freedom.',
-                className: ""
+                imageClassName: "",
+                titleClassName: "",
+                containerClassName: "justify-start"
             }
         ]
     },
@@ -95,21 +107,27 @@ const events = [
                 title: "Event Statue 7",
                 link: "/events/7",
                 description: 'A symbol of resilience and hope, the Lamplighter statue commemorates the sacrifices made by the fallen during World War I. Its presence reminds us of the importance of remembering and honoring those who have served and sacrificed for our freedom.',
-                className: ""
+                imageClassName: "",
+                titleClassName: "",
+                containerClassName: "justify-start"
             },
             {
                 image: "/images/event-statue-8.jpg",
                 title: "Event Statue 8",
                 link: "/events/8",
                 description: 'A symbol of resilience and hope, the Lamplighter statue commemorates the sacrifices made by the fallen during World War I. Its presence reminds us of the importance of remembering and honoring those who have served and sacrificed for our freedom.',
-                className: ""
+                imageClassName: "",
+                titleClassName: "",
+                containerClassName: "justify-end"
             },
             {
                 image: "/images/event-statue-9.jpg",
                 title: "Event Statue 9",
                 link: "/events/9",
                 description: 'A symbol of resilience and hope, the Lamplighter statue commemorates the sacrifices made by the fallen during World War I. Its presence reminds us of the importance of remembering and honoring those who have served and sacrificed for our freedom.',
-                className: ""
+                imageClassName: "",
+                titleClassName: "",
+                containerClassName: "justify-start"
             }
         ]
     },
@@ -184,24 +202,33 @@ const EventPage = ({ event }: EventPageProps) => {
                     </div>
                 </div>
                 {/* Event Statues - 3 items in 1 column */}
-                {event.eventStatues.map((statue, index) => (
-                    <div key={index} className="relative w-full h-full">
-                        <Image
-                            src={statue.image}
-                            alt={statue.title}
-                            fill
-                            className="object-cover"
-                        />
-                        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
-                            <h3 className={`text-lg md:text-7xl font-bold text-white mb-2 ${beau_rivage.variable} ${beau_rivage.className}`}>
-                                {statue.title}
-                            </h3>
-                            <p className="text-sm md:text-base text-white">
-                                {statue.description}
-                            </p>
+                {event.eventStatues.map((statue, index) => {
+
+
+                    return (
+                        <div key={index} className={`relative w-full h-full flex flex-col ${statue.containerClassName || ''}`}>
+                            {/* Picture Frame Container - Allow dynamic sizing */}
+                            <div className={`relative w-full ${statue.imageClassName || 'h-1/2'} shrink-0`}>
+                                <Image
+                                    src={statue.image}
+                                    alt={statue.title}
+                                    fill
+                                    className="object-contain"
+                                />
+                            </div>
+
+                            {/* Title and Description - Positioned right below the image container */}
+                            <div className={`pb-4 px-4 md:pb-6 md:px-6 flex flex-col justify-start items-center flex-1 min-h-0 ${statue.titleClassName || ''}`}>
+                                <h3 className={`text-lg md:text-7xl font-bold text-[#F4E590] mb-1 md:mb-2 ${beau_rivage.variable} ${beau_rivage.className}`}>
+                                    {statue.title}
+                                </h3>
+                                <p className="text-sm md:text-base text-white text-center">
+                                    {statue.description}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    )
+                })}
             </div>
         </div>
     )
