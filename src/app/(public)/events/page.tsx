@@ -5,6 +5,13 @@ import Image from "next/image"
 import { useRef } from "react"
 import Link from "next/link"
 import { ArrowUpRight } from "lucide-react"
+import { Beau_Rivage } from "next/font/google"
+
+const beau_rivage = Beau_Rivage({
+    variable: "--font-beau-rivage",
+    subsets: ["latin"],
+    weight: ["400"],
+});
 
 // Sample events data - replace with actual data source
 const events = [
@@ -20,18 +27,24 @@ const events = [
         eventStatues: [
             {
                 image: "/images/event-statue-1.jpg",
-                title: "Event Statue 1",
-                link: "/events/1"
+                title: "Orsem",
+                link: "/events/1",
+                description: 'Ateneo’s vibrant welcome tradition. Where freshies are introduced to campus life, Atenean culture, and the spirit of community through cheers, performances, and unforgettable memories.',
+                className: ""
             },
             {
                 image: "/images/event-statue-2.jpg",
                 title: "Event Statue 2",
-                link: "/events/2"
+                link: "/events/2",
+                description: 'A symbol of resilience and hope, the Lamplighter statue commemorates the sacrifices made by the fallen during World War I. Its presence reminds us of the importance of remembering and honoring those who have served and sacrificed for our freedom.',
+                className: ""
             },
             {
                 image: "/images/event-statue-3.jpg",
                 title: "Event Statue 3",
-                link: "/events/3"
+                link: "/events/3",
+                description: 'A symbol of resilience and hope, the Lamplighter statue commemorates the sacrifices made by the fallen during World War I. Its presence reminds us of the importance of remembering and honoring those who have served and sacrificed for our freedom.',
+                className: ""
             }
         ]
     },
@@ -48,17 +61,23 @@ const events = [
             {
                 image: "/images/event-statue-4.jpg",
                 title: "Event Statue 4",
-                link: "/events/4"
+                link: "/events/4",
+                description: 'A symbol of resilience and hope, the Lamplighter statue commemorates the sacrifices made by the fallen during World War I. Its presence reminds us of the importance of remembering and honoring those who have served and sacrificed for our freedom.',
+                className: ""
             },
             {
                 image: "/images/event-statue-5.jpg",
                 title: "Event Statue 5",
-                link: "/events/5"
+                link: "/events/5",
+                description: 'A symbol of resilience and hope, the Lamplighter statue commemorates the sacrifices made by the fallen during World War I. Its presence reminds us of the importance of remembering and honoring those who have served and sacrificed for our freedom.',
+                className: ""
             },
             {
                 image: "/images/event-statue-6.jpg",
                 title: "Event Statue 6",
-                link: "/events/6"
+                link: "/events/6",
+                description: 'A symbol of resilience and hope, the Lamplighter statue commemorates the sacrifices made by the fallen during World War I. Its presence reminds us of the importance of remembering and honoring those who have served and sacrificed for our freedom.',
+                className: ""
             }
         ]
     },
@@ -74,17 +93,23 @@ const events = [
             {
                 image: "/images/event-statue-7.jpg",
                 title: "Event Statue 7",
-                link: "/events/7"
+                link: "/events/7",
+                description: 'A symbol of resilience and hope, the Lamplighter statue commemorates the sacrifices made by the fallen during World War I. Its presence reminds us of the importance of remembering and honoring those who have served and sacrificed for our freedom.',
+                className: ""
             },
             {
                 image: "/images/event-statue-8.jpg",
                 title: "Event Statue 8",
-                link: "/events/8"
+                link: "/events/8",
+                description: 'A symbol of resilience and hope, the Lamplighter statue commemorates the sacrifices made by the fallen during World War I. Its presence reminds us of the importance of remembering and honoring those who have served and sacrificed for our freedom.',
+                className: ""
             },
             {
                 image: "/images/event-statue-9.jpg",
                 title: "Event Statue 9",
-                link: "/events/9"
+                link: "/events/9",
+                description: 'A symbol of resilience and hope, the Lamplighter statue commemorates the sacrifices made by the fallen during World War I. Its presence reminds us of the importance of remembering and honoring those who have served and sacrificed for our freedom.',
+                className: ""
             }
         ]
     },
@@ -154,7 +179,7 @@ const EventPage = ({ event }: EventPageProps) => {
                             src={event.feature.image}
                             alt={event.feature.title}
                             fill
-                            className="object-cover"
+                            className="object-cover w-full h-full"
                         />
                     </div>
                 </div>
@@ -167,6 +192,14 @@ const EventPage = ({ event }: EventPageProps) => {
                             fill
                             className="object-cover"
                         />
+                        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+                            <h3 className={`text-lg md:text-7xl font-bold text-white mb-2 ${beau_rivage.variable} ${beau_rivage.className}`}>
+                                {statue.title}
+                            </h3>
+                            <p className="text-sm md:text-base text-white">
+                                {statue.description}
+                            </p>
+                        </div>
                     </div>
                 ))}
             </div>
