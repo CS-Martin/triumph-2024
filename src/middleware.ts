@@ -1,10 +1,8 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
-import { NextResponse } from 'next/server';
 
 const isPublicRoute = createRouteMatcher(['/sign-in(.*)', '/sign-up(.*)', '/model(.*)']);
 
 export default clerkMiddleware(async (auth, req) => {
-  const url = req.nextUrl.clone();
 
   // Protect private routes
   if (!isPublicRoute(req)) {

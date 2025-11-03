@@ -1,10 +1,8 @@
 "use client"
 
-import { motion, useTransform, useScroll, MotionValue } from "motion/react"
+import { motion, useTransform, useScroll } from "motion/react"
 import Image from "next/image"
-import { useEffect, useRef, useState } from "react"
-import Link from "next/link"
-import { ArrowUpRight } from "lucide-react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { Beau_Rivage } from "next/font/google"
 
 const beau_rivage = Beau_Rivage({
@@ -140,6 +138,9 @@ export default function EventsPage() {
     })
 
     useEffect(() => {
+        // Set initial screen size
+        setScreenSize(window.innerWidth)
+
         const handleResize = () => {
             setScreenSize(window.innerWidth)
         }
@@ -147,30 +148,42 @@ export default function EventsPage() {
         return () => window.removeEventListener('resize', handleResize)
     }, [])
 
+    // Calculate scroll multiplier based on screen size
+    const scrollMultiplier = useMemo(() => {
+        if (screenSize === null) {
+            // Default to desktop value while screen size is being determined
+            return 100
+        }
+        if (screenSize < 768) {
+            // Mobile
+            return 195
+        }
+        if (screenSize >= 768 && screenSize < 1024) {
+            // Tablet
+            return 170
+        }
+        if (screenSize >= 1024 && screenSize < 1280) {
+            // Small Laptop
+            return 150
+        }
+        if (screenSize >= 1280) {
+            // Default Laptop
+            return 150
+        }
+        // Large Desktop (default)
+        return 100
+    }, [screenSize])
 
     // Transform horizontal position based on scroll progress
-    // Adjust based on number of events: -(numberOfEvents - 1) * 100
-
-
-    let x: MotionValue<string>;
-
-    switch (screenSize) {
-        case (screenSize && screenSize < 768): // Mobile
-            x = useTransform(scrollYProgress, [0, 1], ['0%', `-${(events.length - 1) * 195}%`])
-            break;
-        case (screenSize && screenSize >= 768): // Tablet
-            x = useTransform(scrollYProgress, [0, 1], ['0%', `-${(events.length - 1) * 100}%`])
-            break;
-        case (screenSize && screenSize >= 1024): // Small Laptop
-            x = useTransform(scrollYProgress, [0, 1], ['0%', `-${(events.length - 1) * 100}%`])
-            break;
-        case (screenSize && screenSize >= 1280): // Default Laptop
-            x = useTransform(scrollYProgress, [0, 1], ['0%', `-${(events.length - 1) * 100}%`])
-            break;
-        default: // Large Desktop
-            x = useTransform(scrollYProgress, [0, 1], ['0%', `-${(events.length - 1) * 100}%`])
-            break;
-    }
+    // Always call useTransform unconditionally (React Hooks rule)
+    // Use function callback to ensure reactivity when scrollMultiplier changes
+    const x = useTransform(
+        scrollYProgress,
+        (latest) => {
+            const offset = (events.length - 1) * scrollMultiplier
+            return `${-latest * offset}%`
+        }
+    )
 
     return (
         <main className="relative h-[400vh]">
