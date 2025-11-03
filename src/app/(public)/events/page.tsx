@@ -21,7 +21,7 @@ const events = [
         feature: {
             image: "/events/plant1.webp",
             title: "Plant 1",
-            className: "absolute left-1/2 -translate-x-1/2 -bottom-60 w-full h-[85%] 2xl:w-full 2xl:h-full"
+            className: "absolute left-1/2 -translate-x-1/2 -bottom-60 md:-bottom-80 w-full h-full"
         },
         eventStatues: [
             {
@@ -215,7 +215,7 @@ type EventPageProps = {
 
 const EventPage = ({ event }: EventPageProps) => {
     return (
-        <div className="shrink-0 w-[140%] 2xl:w-full h-screen flex items-center justify-center">
+        <div className="shrink-0 w-[140%] md:w-full 2xl:w-full h-screen flex items-center justify-center">
             <div className="flex flex-row gap-x-3 w-full h-full min-h-screen z-20 relative">
                 {/* Style Statue - Takes 1 column, spans 2 rows */}
                 <div className="relative w-[80%] 2xl:w-full h-full">
