@@ -82,7 +82,7 @@ export default function SignInPage() {
                         }}
                         className="hidden lg:block"
                     >
-                        <Image src="/triumph-title.svg" alt="Triumph Yearbook 2024" width={500} height={500} className="2xl:w-[500px] xl:w-[400px] w-[400px] h-auto" />
+                        <Image src="/triumph-logo.svg" alt="Triumph Yearbook 2024" width={500} height={500} className="2xl:w-[500px] xl:w-[400px] w-[400px] h-auto" />
                     </motion.div>
 
                     <motion.div
