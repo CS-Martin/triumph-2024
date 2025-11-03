@@ -32,7 +32,7 @@ const events = [
                 description: 'Ateneo vibrant welcome tradition. Where freshies are introduced to campus life, Atenean culture, and the spirit of community through cheers, performances, and unforgettable memories.',
                 imageClassName: "h-[40%]",
                 titleClassName: "",
-                containerClassName: ""
+                containerClassName: "2xl:mt-20"
             },
             {
                 image: "/events/frame2.webp",
@@ -41,7 +41,7 @@ const events = [
                 description: `The feast of our founder, St. Ignatius of Loyola. A day of faith, fun, and community, filled with Masses, performances, and Ignatian spirit all around campus.`,
                 imageClassName: "h-[55%]",
                 titleClassName: "",
-                containerClassName: ""
+                containerClassName: "2xl:mt-45"
             },
             {
                 image: "/events/frame3.webp",
@@ -50,7 +50,7 @@ const events = [
                 description: `Coming together as one Ateneo community to pray for wisdom, courage, and grace for the months ahead.`,
                 imageClassName: "h-[40%]",
                 titleClassName: "",
-                containerClassName: ""
+                containerClassName: "2xl:mt-10"
             }
         ]
     },
