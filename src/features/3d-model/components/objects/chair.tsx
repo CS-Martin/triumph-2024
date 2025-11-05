@@ -3,6 +3,7 @@ import * as THREE from "three"
 import { gsap } from "gsap"
 import { useFrame } from "@react-three/fiber"
 import { useCameraStore } from "../../stores/camera-store"
+import { useRouter } from "next/navigation"
 
 type ChairProps = {
     nodes: {
@@ -14,6 +15,7 @@ type ChairProps = {
 }
 
 export default function Chair({ nodes, materials }: ChairProps) {
+    const router = useRouter()
     const focusOnObject = useCameraStore((state) => state.focusOnObject)
     const setHoveredObject = useCameraStore((state) => state.setHoveredObject)
     const isFocused = useCameraStore((state) => state.isFocused && state.focusedObjectId === 'chair')

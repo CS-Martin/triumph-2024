@@ -30,7 +30,9 @@ export default function TriumphScene({ axes }: TriumphModelAxesProps) {
         <div className="absolute inset-0 z-10 flex items-center justify-center">
             <Canvas
                 className="w-full h-full"
-                camera={{ fov: 50 }}
+
+
+                camera={{ position: [20, 0, 0], fov: 50 }}
                 gl={{ antialias: true, alpha: true }}
                 shadows
                 onPointerEnter={() => setIsHovered(true)}

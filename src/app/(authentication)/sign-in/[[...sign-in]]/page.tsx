@@ -31,7 +31,7 @@ export default function SignInPage() {
             {/* 3D Scene - Hidden on mobile, visible on large screens */}
             <div className="hidden lg:flex flex-1 z-10 relative overflow-hidden border-l">
                 <div className="absolute inset-0">
-                    <TriumphScene axes={{ x: -23, y: -28, depth: -175 }} />
+                    <TriumphScene axes={{ x: -23, y: -28, depth: -170 }} />
                 </div>
             </div>
 
@@ -45,7 +45,7 @@ export default function SignInPage() {
                         pointer-events-none 
                         w-full lg:w-auto
                         absolute lg:right-[10%] 
-                        top-0 h-full z-20 
+                        top-1/2 -translate-y-1/2 h-fit  z-20 
                         flex flex-col justify-center items-center 
                         px-4 sm:px-6 md:px-8 lg:px-0
                         2xl:max-w-[500px] xl:max-w-[400px] lg:max-w-[400px] max-w-full
@@ -61,7 +61,7 @@ export default function SignInPage() {
                             damping: 15,
                             delay: 0.1
                         }}
-                        className="lg:hidden"
+                        className="lg:hidden relative z-10"
                     >
                         <Image
                             src="/triumph-title.svg"
@@ -80,7 +80,7 @@ export default function SignInPage() {
                             damping: 15,
                             delay: 0.2
                         }}
-                        className="hidden lg:block"
+                        className="hidden lg:block relative z-10"
                     >
                         <Image src="/triumph-logo.svg" alt="Triumph Yearbook 2024" width={500} height={500} className="2xl:w-[500px] xl:w-[400px] w-[400px] h-auto" />
                     </motion.div>
@@ -93,7 +93,7 @@ export default function SignInPage() {
                             delay: 0.5,
                             ease: [0.25, 0.1, 0.25, 1]
                         }}
-                        className='w-full max-w-[500px] flex flex-col items-center mt-4 sm:mt-6'
+                        className='w-full max-w-[500px] flex flex-col items-center mt-4 sm:mt-6 relative z-10'
                     >
                         {/* Subtitle */}
                         <motion.p
