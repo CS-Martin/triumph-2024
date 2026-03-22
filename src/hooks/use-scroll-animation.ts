@@ -46,11 +46,11 @@ export function useScrollAnimation(totalSections: number = 3) {
       })
       .to(sceneRef.current, {
         ease: 'none',
-        x: '35vw',
+        x: '25vw',
       })
       .to(sceneRef.current, {
         ease: 'none',
-        x: '-35vw',
+        x: '-25vw',
       });
 
     scrollToSectionRef.current = (index: number) => {
@@ -62,8 +62,8 @@ export function useScrollAnimation(totalSections: number = 3) {
 
       gsap.to(window, {
         scrollTo: { y: sections[index], autoKill: false },
-        duration: 0.8,
-        ease: 'power2.inOut',
+        duration: 1.5,
+        ease: 'power2.in',
         onComplete: () => {
           setTimeout(() => {
             isScrollingRef.current = false;

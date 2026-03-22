@@ -8,7 +8,7 @@ type IgnatiusModelProps = GLTF & {
     materials: { Default: THREE.MeshStandardMaterial }
 }
 
-export function Model(props?: any) {
+export function IgnatiusModel(props?: any) {
     const gltfData = useGLTF('/model/ignatius-model.glb') as unknown as IgnatiusModelProps
     const { nodes, materials } = gltfData
     const meshRef = useRef<THREE.Mesh>(null)
