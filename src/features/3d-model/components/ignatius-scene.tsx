@@ -21,7 +21,7 @@ export default function IgnatiusScene({ progress }: IgnatiusSceneProps) {
         const updateCameraPosition = () => {
             // Update camera position based on progress
             const positions = [
-                [0, 0, 3.77],
+                [0, 0, 4.77],
                 [3, 2, 2.5],
                 [-3, 2, 3],
             ];
@@ -64,7 +64,7 @@ export default function IgnatiusScene({ progress }: IgnatiusSceneProps) {
                 fov={32}
                 far={1000}
                 near={0.1}
-                position={[-1, 0, 3.7]}
+                position={[0, 0, 4.7]}
             />
             {/* <OrbitControls /> */}
             <axesHelper args={[500]} />
@@ -74,7 +74,7 @@ export default function IgnatiusScene({ progress }: IgnatiusSceneProps) {
             <ambientLight intensity={20} color="#a09b9b" />
 
 
-            <group position={[0, -1.5, 0]} scale={1.4}>
+            <group position={[0, -1.5, 0]} scale={1.3}>
                 <Model />
             </group>
 
