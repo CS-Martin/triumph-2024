@@ -1,28 +1,24 @@
 'use client';
 
-import { SceneContainer } from "@/components/scene-container";
-import { WelcomeSection, HeroSection, AboutSection } from "@/components/sections";
-import { NavigationDots } from "@/components/navigation-dots";
-import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { SceneContainer } from '@/components/scene-container';
+import { WelcomeSection, PresidentMessageSection, ValedictorianMessageSection } from '@/components/sections';
+import { NavigationDots } from '@/components/navigation-dots';
+import { useScrollAnimation } from '@/hooks/use-scroll-animation';
 
 export default function Home() {
-    const { mainRef, sceneRef, progress, currentSection, scrollToSection } = useScrollAnimation();
+  const { mainRef, sceneRef, progress, currentSection, scrollToSection } = useScrollAnimation();
 
-    return (
-        <>
-            <SceneContainer progress={progress} sceneRef={sceneRef} />
+  return (
+    <>
+      <SceneContainer progress={progress} sceneRef={sceneRef} />
 
-            <NavigationDots
-                totalSections={3}
-                currentSection={currentSection}
-                onSectionClick={scrollToSection}
-            />
+      <NavigationDots totalSections={3} currentSection={currentSection} onSectionClick={scrollToSection} />
 
-            <main ref={mainRef} className="relative z-10">
-                <WelcomeSection />
-                <HeroSection />
-                <AboutSection />
-            </main>
-        </>
-    );
+      <main ref={mainRef} className='relative z-10'>
+        <WelcomeSection />
+        <PresidentMessageSection />
+        <ValedictorianMessageSection />
+      </main>
+    </>
+  );
 }

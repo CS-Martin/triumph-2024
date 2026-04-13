@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Beau_Rivage, Montserrat, Rosarivo } from 'next/font/google';
+import { Beau_Rivage, Montagu_Slab, Montserrat, Rosarivo } from 'next/font/google';
 import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import { ThemeProvider } from '@/providers/theme.provider';
@@ -10,6 +10,12 @@ import '@/styles/fireflies.css';
 
 const beauRivage = Beau_Rivage({
   variable: '--font-beau-rivage',
+  subsets: ['latin'],
+  weight: '400',
+});
+
+const montaguSlab = Montagu_Slab({
+  variable: '--font-montagu-slab',
   subsets: ['latin'],
   weight: '400',
 });
@@ -58,7 +64,7 @@ export default function RootLayout({
       }}>
       <html lang='en' suppressHydrationWarning>
         <body
-          className={`${montserrat.className} ${montserrat.variable} ${beauRivage.className} ${beauRivage.variable} ${rosarivo.className} ${rosarivo.variable} antialiased`}>
+          className={`${montaguSlab.className} ${montaguSlab.variable} ${montserrat.className} ${montserrat.variable} ${beauRivage.className} ${beauRivage.variable} ${rosarivo.className} ${rosarivo.variable} antialiased`}>
           <ThemeProvider attribute='class' defaultTheme='dark' enableSystem>
             <LoadingProgressProvider>
               {children}
