@@ -1,22 +1,34 @@
-import type { Metadata } from "next";
-import { Beau_Rivage, Geist, Geist_Mono, Rosarivo } from "next/font/google";
-import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
-import { ThemeProvider } from "@/providers/theme.provider";
-import { LoadingProgressProvider } from "@/providers/bprogress.provider";
-import { Toaster } from "@/components/ui/sonner";
-import "@/styles/clerk.css";
-import "@/styles/fireflies.css";
+import type { Metadata } from 'next';
+import { Beau_Rivage, Montserrat, Rosarivo } from 'next/font/google';
+import './globals.css';
+import { ClerkProvider } from '@clerk/nextjs';
+import { ThemeProvider } from '@/providers/theme.provider';
+import { LoadingProgressProvider } from '@/providers/bprogress.provider';
+import { Toaster } from '@/components/ui/sonner';
+import '@/styles/clerk.css';
+import '@/styles/fireflies.css';
+
+const beauRivage = Beau_Rivage({
+  variable: '--font-beau-rivage',
+  subsets: ['latin'],
+  weight: '400',
+});
+
+const montserrat = Montserrat({
+  variable: '--font-montserrat',
+  subsets: ['latin'],
+  weight: '400',
+});
 
 const rosarivo = Rosarivo({
-  variable: "--font-rosarivo",
-  subsets: ["latin"],
-  weight: "400",
+  variable: '--font-rosarivo',
+  subsets: ['latin'],
+  weight: '400',
 });
 
 export const metadata: Metadata = {
-  title: "Triumph Yearbook 2024",
-  description: "Triumph Yearboowk 2024",
+  title: 'Triumph Yearbook 2024',
+  description: 'Triumph Yearboowk 2024',
 };
 
 export default function RootLayout({
@@ -44,20 +56,13 @@ export default function RootLayout({
           input: '!border-[#F4E590] !border-4 !bg-[#343434] !text-white !rounded-full  !2xl:py-4 !py-3',
         },
       }}>
-      <html lang="en" suppressHydrationWarning>
+      <html lang='en' suppressHydrationWarning>
         <body
-          className={`${rosarivo.className} ${rosarivo.variable} antialiased`}
-        >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem>
+          className={`${montserrat.className} ${montserrat.variable} ${beauRivage.className} ${beauRivage.variable} ${rosarivo.className} ${rosarivo.variable} antialiased`}>
+          <ThemeProvider attribute='class' defaultTheme='dark' enableSystem>
             <LoadingProgressProvider>
               {children}
-              <Toaster
-                position='top-right'
-                richColors
-              />
+              <Toaster position='top-right' richColors />
             </LoadingProgressProvider>
           </ThemeProvider>
         </body>
