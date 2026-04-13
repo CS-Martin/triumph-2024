@@ -228,16 +228,182 @@ export function PresidentMessageSection() {
 }
 
 export function ValedictorianMessageSection() {
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top bottom',
+        end: '30% top',
+        scrub: 1,
+      },
+    });
+
+    if (titleRef.current) {
+      // Split title into individual characters
+      const text = titleRef.current.innerText || '';
+      const chars = text.split('');
+
+      // Clear the original text
+      titleRef.current.innerHTML = '';
+
+      // Wrap each character in a span
+      chars.forEach((char, index) => {
+        const span = document.createElement('span');
+        span.textContent = char === ' ' ? '\u00A0' : char; // Use non-breaking space for spaces
+        span.style.display = 'inline-block';
+        span.style.opacity = '0';
+        span.style.transform = 'translateY(100px)';
+        titleRef.current?.appendChild(span);
+
+        // Character stagger animation: fade-up from below
+        tl.to(
+          span,
+          {
+            y: -30,
+            opacity: 1,
+            duration: 3,
+            ease: 'power3.inOut',
+          },
+          index * 0.06,
+        );
+      });
+    }
+
+    // Text content fade animations
+    if (contentRef.current) {
+      const paragraphs = contentRef.current.querySelectorAll('p');
+
+      // Set initial opacity to 0
+      gsap.set(paragraphs, { opacity: 0 });
+
+      paragraphs.forEach((p, index) => {
+        // Fade in animation
+        tl.to(
+          p,
+          {
+            opacity: 1,
+            duration: 1,
+            ease: 'power2.out',
+          },
+          18 * 0.06 + index * 0.2,
+        );
+
+        // Fade out animation
+        tl.to(
+          p,
+          {
+            opacity: 0,
+            duration: 1,
+            ease: 'power2.in',
+          },
+          18 * 0.06 + index * 0.2 + 2,
+        );
+      });
+    }
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
+  }, []);
+
   return (
-    <section className='h-screen flex items-center justify-center'>
-      <div className='max-w-4xl mx-auto px-8'>
-        <h2 className='text-5xl font-bold text-white mb-8' style={{ fontFamily: 'Georgia, serif' }}>
-          About the Event
-        </h2>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
-          <div className='bg-white/10 backdrop-blur-sm rounded-lg p-6'>
-            <h3 className='text-2xl font-semibold text-[#c8a44a] mb-4'>Innovation</h3>
-            <p className='text-gray-200'>Discover cutting-edge technologies and groundbreaking ideas.</p>
+    <section ref={sectionRef} className='h-screen relative overflow-hidden'>
+      <div className='h-full flex flex-col lg:flex-row items-center justify-center px-8 lg:px-16'>
+        {/* Left side - 3D Model Space */}
+        <div className='hidden lg:block lg:w-1/2 relative'>
+          {/* 3D model will be placed here */}
+          <div className='w-full h-full flex items-center justify-center'>
+            {/* Placeholder for 3D model */}
+            <div className='w-96 h-96 bg-linear-to-br from-gray-600 to-gray-800 rounded-full opacity-20 blur-2xl'></div>
+          </div>
+        </div>
+
+        {/* Right side - Valedictorian Message */}
+        <div className='w-full lg:w-1/2 pl-4 pr-4 sm:pl-6 sm:pr-6 md:pl-8 md:pr-8 lg:pl-12 lg:pr-12 xl:pl-16 xl:pr-16 flex items-center justify-center'>
+          <div className='relative max-w-4xl mx-auto'>
+            <h2
+              ref={titleRef}
+              className='mb-8'
+              style={{
+                fontFamily: 'var(--font-beau-rivage)',
+                color: '#F4E590',
+                fontSize: 'clamp(2rem, 6vw, 12rem)',
+                lineHeight: 1,
+              }}>
+              Class Valedictorian
+            </h2>
+            {/* Opening quotation mark */}
+            <span
+              className='text-white absolute'
+              style={{
+                fontFamily: 'var(--font-montagu-slab)',
+                fontSize: 'clamp(4rem, 12vw, 18rem)',
+                top: 'clamp(2rem, 3.5vw, 23rem)',
+                right: 'clamp(-9rem, -4vw, -8rem)',
+                lineHeight: 1,
+              }}>
+              "
+            </span>
+
+            <div ref={contentRef} className='text-justify'>
+              <p
+                className='text-white leading-relaxed text-lg lg:text-xl mb-6'
+                style={{ fontFamily: 'var(--font-montserrat)' }}>
+                Good day to our University President, administrators, faculty, parents, and my fellow graduates of
+                Ateneo de Naga University.
+              </p>
+
+              <p
+                className='text-white/90 leading-relaxed text-base lg:text-lg mb-4'
+                style={{ fontFamily: 'var(--font-montserrat)' }}>
+                Today, we stand not just as students who completed a program, but as individuals shaped by years of
+                perseverance, sacrifice, and faith. Behind our togas are sleepless nights, quiet doubts, financial
+                struggles, creative blocks, and moments when giving up felt easier than pushing forward. Yet here we
+                are, stronger, wiser, and deeply grateful.
+              </p>
+
+              <p
+                className='text-white/90 leading-relaxed text-base lg:text-lg mb-4'
+                style={{ fontFamily: 'var(--font-montserrat)' }}>
+                Our theme, “Every Thread of Struggle, A Tapestry of Triumph,” reminds us that success was never woven
+                overnight. Each setback strengthened our character. Each failure refined our purpose. Each act of
+                kindness and collaboration reflected the Ignatian spirit of cura personalis and being men and women for
+                and with others. This diploma is not just proof of what we have learned, but of who we have become.
+              </p>
+
+              <p
+                className='text-white/90 leading-relaxed text-base lg:text-lg mb-6'
+                style={{ fontFamily: 'var(--font-montserrat)' }}>
+                As we leave these halls, may we continue to seek the magis, not just to achieve more, but to serve more,
+                love more, and lead with integrity. The world awaits the tapestry we will continue to weave.
+                Congratulations, Batch 2024. Ad Majorem Dei Gloriam.
+              </p>
+
+              {/* Valedictorian Signature */}
+              <div className='absolute bottom-8 left-0 right-0 flex justify-center text-[#c8a44a]'>
+                <img src='/pres-signature.png' alt='Valedictorian Signature' className='h-16 lg:h-20 opacity-90' />
+              </div>
+            </div>
+
+            {/* Closing quotation mark */}
+            <span
+              className='text-white absolute'
+              style={{
+                fontFamily: 'var(--font-montagu-slab)',
+                fontSize: 'clamp(4rem, 12vw, 18rem)',
+                rotate: '180deg',
+                bottom: '-3rem',
+                left: '-8rem',
+                lineHeight: 1,
+              }}>
+              "
+            </span>
           </div>
         </div>
       </div>
