@@ -18,13 +18,13 @@ export function NavigationDots({ totalSections, currentSection, onSectionClick }
           gsap.to(dot, {
             width: '3rem',
             duration: 0.01,
-            ease: 'power2.out'
+            ease: 'power2.out',
           });
         } else {
           gsap.to(dot, {
             width: '0.3rem',
             duration: 0.01,
-            ease: 'power2.out'
+            ease: 'power2.out',
           });
         }
       }
@@ -41,21 +41,23 @@ export function NavigationDots({ totalSections, currentSection, onSectionClick }
         duration: 0.1,
         yoyo: true,
         repeat: 1,
-        ease: 'power2.out'
+        ease: 'power2.out',
       });
     }
   };
 
   return (
-    <div className="fixed left-32 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-8">
+    <div className='fixed left-32 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-8'>
       {Array.from({ length: totalSections }).map((_, index) => (
         <button
           key={index}
-          ref={el => {
+          ref={(el) => {
             if (el) dotsRef.current[index] = el;
           }}
           onClick={() => handleDotClick(index)}
-          className="h-1 bg-white rounded-full cursor-pointer transition-all duration-700"
+          className={`h-1 rounded-full cursor-pointer transition-all duration-700 ${
+            index === currentSection ? 'bg-[#F4E590]' : 'bg-white'
+          }`}
           style={{ width: '0.3rem' }}
           aria-label={`Go to section ${index + 1}`}
         />

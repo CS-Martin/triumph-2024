@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Search, Menu, X } from 'lucide-react';
+import Link from 'next/link';
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,7 +13,7 @@ export function Navbar() {
         {/* Logo */}
         <div className='flex items-center gap-3'>
           <img src='/triumph-icon.png' alt='Triumph Icon' className='h-10 w-auto' />
-          <img src='/triumph-logo.png' alt='Triumph 2024' className='h-8 w-auto' />
+          <img src='/triumph-logo.png' alt='Triumph 2024' className='h-12 w-auto' />
         </div>
 
         {/* Navigation Links - Desktop */}
@@ -20,9 +21,9 @@ export function Navbar() {
           <a href='#messages' className='text-[#F4E590] hover:text-white transition-colors text-lg font-medium'>
             Messages
           </a>
-          <a href='#graduates' className='text-[#F4E590] hover:text-white transition-colors text-lg font-medium'>
-            Graduates
-          </a>
+          <Link href='/colleges' className='text-[#F4E590] hover:text-white transition-colors text-lg font-medium'>
+            Colleges
+          </Link>
           <a href='#admin' className='text-[#F4E590] hover:text-white transition-colors text-lg font-medium'>
             Administrator, Faculty, and Staff
           </a>
@@ -38,7 +39,7 @@ export function Navbar() {
               type='text'
               placeholder='Search'
               className='bg-transparent border-2 border-[#F4E590] rounded-full py-1.5 px-4 pl-10 text-[#F4E590] placeholder-[#F4E590]/70 text-sm w-48 focus:outline-none focus:ring-2 focus:ring-[#F4E590]/50'
-              style={{ fontFamily: 'var(--font-montserrat)' }}
+              style={{ fontFamily: 'var(--font-rosarivo)' }}
             />
             <Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#F4E590]' />
           </div>
@@ -60,25 +61,25 @@ export function Navbar() {
             <a
               href='#messages'
               className='text-[#F4E590] hover:text-white transition-colors text-sm font-medium'
-              style={{ fontFamily: 'var(--font-montserrat)' }}>
+              style={{ fontFamily: 'var(--font-rosarivo)' }}>
               Messages
             </a>
             <a
               href='#graduates'
               className='text-[#F4E590] hover:text-white transition-colors text-sm font-medium'
-              style={{ fontFamily: 'var(--font-montserrat)' }}>
+              style={{ fontFamily: 'var(--font-rosarivo)' }}>
               Graduates
             </a>
             <a
               href='#admin'
               className='text-[#F4E590] hover:text-white transition-colors text-sm font-medium'
-              style={{ fontFamily: 'var(--font-montserrat)' }}>
+              style={{ fontFamily: 'var(--font-rosarivo)' }}>
               Administrator, Faculty, and Staff
             </a>
             <a
               href='#events'
               className='text-[#F4E590] hover:text-white transition-colors text-sm font-medium'
-              style={{ fontFamily: 'var(--font-montserrat)' }}>
+              style={{ fontFamily: 'var(--font-rosarivo)' }}>
               University Events
             </a>
             {/* Mobile Search */}
@@ -87,7 +88,7 @@ export function Navbar() {
                 type='text'
                 placeholder='Search'
                 className='bg-transparent border-2 border-[#F4E590] rounded-full py-1.5 px-4 pl-10 text-[#F4E590] placeholder-[#F4E590]/70 text-sm w-full focus:outline-none focus:ring-2 focus:ring-[#F4E590]/50'
-                style={{ fontFamily: 'var(--font-montserrat)' }}
+                style={{ fontFamily: 'var(--font-rosarivo)' }}
               />
               <Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#F4E590]' />
             </div>
