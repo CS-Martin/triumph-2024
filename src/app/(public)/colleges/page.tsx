@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { type TouchEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Navbar } from '@/components/layout/nav';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -86,6 +87,7 @@ const colleges: CollegeItem[] = [
 ];
 
 export default function CollegesPage() {
+  const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState<1 | -1>(1);
   const [viewportWidth, setViewportWidth] = useState(1200);
@@ -136,8 +138,12 @@ export default function CollegesPage() {
     }
   };
 
-  const handlePaintingClick = (offset: number) => {
-    navigateByOffset(offset);
+  const handlePaintingClick = (offset: number, collegeKey: string) => {
+    if (offset === 0) {
+      router.push(`/colleges/${collegeKey}`);
+    } else {
+      navigateByOffset(offset);
+    }
   };
 
   const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
@@ -244,7 +250,7 @@ export default function CollegesPage() {
                   <motion.button
                     key={item.key}
                     type='button'
-                    onClick={() => handlePaintingClick(offset)}
+                    onClick={() => handlePaintingClick(offset, item.key)}
                     className='absolute'
                     initial={{ x: baseTranslate + slideDirection * 180, opacity: 0 }}
                     animate={{
