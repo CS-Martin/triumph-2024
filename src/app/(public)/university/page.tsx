@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { type TouchEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Navbar } from '@/components/layout/nav';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -41,9 +42,11 @@ const universityItems: UniversityItem[] = [
 ];
 
 export default function UniversityPage() {
+  const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState<1 | -1>(1);
   const [viewportWidth, setViewportWidth] = useState(1200);
+  const [isZooming, setIsZooming] = useState(false);
   const stepTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const touchStartXRef = useRef<number | null>(null);
   const activeUniversity = universityItems[activeIndex];
@@ -91,8 +94,17 @@ export default function UniversityPage() {
     }
   };
 
-  const handlePaintingClick = (offset: number) => {
-    navigateByOffset(offset);
+  const handlePaintingClick = (offset: number, universityKey: string) => {
+    if (isZooming) return;
+
+    if (offset === 0) {
+      setIsZooming(true);
+      setTimeout(() => {
+        router.push(`/university/${universityKey}`);
+      }, 750);
+    } else {
+      navigateByOffset(offset);
+    }
   };
 
   const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
@@ -136,8 +148,15 @@ export default function UniversityPage() {
 
       <section className='relative pt-36 sm:pt-44 md:pt-60 pb-10 px-4 md:px-8'>
         <div className='mx-auto max-w-[1400px]'>
-          <div
-            className='relative h-[460px] sm:h-[520px] md:h-[640px] flex items-center justify-center perspective-[1800px]'
+          <motion.div
+            className='relative h-[460px] sm:h-[520px] md:h-[640px] flex items-center justify-center'
+            style={{ perspective: '1800px' }}
+            animate={{
+              scale: isZooming ? 1.35 : 1,
+              y: isZooming ? -16 : 0,
+              opacity: isZooming ? 0.95 : 1,
+            }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}>
             <AnimatePresence initial={false}>
@@ -168,25 +187,25 @@ export default function UniversityPage() {
                   <motion.button
                     key={item.key}
                     type='button'
-                    onClick={() => handlePaintingClick(offset)}
+                    onClick={() => handlePaintingClick(offset, item.key)}
                     className='absolute'
                     initial={{ x: baseTranslate + slideDirection * 180, opacity: 0 }}
                     animate={{
-                      x: baseTranslate,
-                      rotateY,
-                      scale,
-                      opacity,
+                      x: isZooming && isCenter ? 0 : baseTranslate,
+                      rotateY: isZooming && isCenter ? 0 : rotateY,
+                      scale: isZooming && isCenter ? scale * 1.25 : scale,
+                      opacity: isZooming && !isCenter ? 0 : opacity,
                     }}
                     exit={{ x: baseTranslate - slideDirection * 180, opacity: 0 }}
-                    transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: isZooming && isCenter ? 0.7 : 0.85, ease: [0.22, 1, 0.36, 1] }}
                     style={{
-                      zIndex: 10 - Math.abs(offset),
+                      zIndex: isZooming && isCenter ? 100 : 10 - Math.abs(offset),
                       width,
                       height,
                       transformStyle: 'preserve-3d',
                       willChange: 'transform, opacity',
                     }}
-                    whileHover={{ scale: scale + 0.03 }}
+                    whileHover={{ scale: !isZooming ? scale + 0.03 : scale }}
                     aria-label={`View ${item.name}`}>
                     <div className='relative h-full w-full overflow-hidden shadow-[0_12px_45px_rgba(0,0,0,0.65)]'>
                       <Image src={item.image} alt={item.name} fill className='cursor-pointer' priority={isCenter} />
@@ -195,13 +214,13 @@ export default function UniversityPage() {
                 );
               })}
             </AnimatePresence>
-          </div>
+          </motion.div>
 
           <div className='mt-2 xl:mt-12 grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-3 xl:gap-13 items-center'>
             <AnimatePresence mode='wait'>
               <motion.h1
                 key={`title-${activeUniversity.key}`}
-                className='text-[#F4E590] leading-[0.9] text-center lg:text-right'
+                className='text-[#F4E590] text-center lg:text-right'
                 style={{ fontFamily: 'var(--font-beau-rivage)', fontSize: 'clamp(3rem,7vw,6.2rem)' }}
                 initial={{ opacity: 0, x: slideDirection * 50, filter: 'blur(6px)' }}
                 animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
