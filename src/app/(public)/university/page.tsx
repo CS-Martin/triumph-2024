@@ -5,7 +5,7 @@ import { type TouchEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { Navbar } from '@/components/layout/nav';
 import { AnimatePresence, motion } from 'framer-motion';
 
-type CollegeItem = {
+type UniversityItem = {
   key: string;
   name: string;
   image: string;
@@ -13,85 +13,40 @@ type CollegeItem = {
   programs: string[];
 };
 
-const colleges: CollegeItem[] = [
+const universityItems: UniversityItem[] = [
   {
-    key: 'computer-studies',
-    name: 'College Of Computer Studies',
-    image: '/colleges/computer-studies.png',
+    key: 'administrators',
+    name: 'University Administrators',
+    image: '/university/deans.png',
     description:
-      'Standing at the intersection of logic and imagination, this academic community brings together programmers who design systems that shape the future and artists and animators who give life to digital worlds.',
-    programs: [
-      'BS Digital Illustration & Animation',
-      'BS Information Technology',
-      'BS Information Systems',
-      'BS Computer Science',
-    ],
+      'Leading with vision and integrity, our administrators guide the institution toward academic excellence and innovation.',
+    programs: ['President & Vice Presidents', 'Deans & Directors', 'Department Chairs', 'Administrative Services'],
   },
   {
-    key: 'business-and-accountancy',
-    name: 'College Of Business And Accountancy',
-    image: '/colleges/business-and-accountancy.png',
+    key: 'faculty',
+    name: 'Faculty Members',
+    image: '/university/admin-faculty-staff.png',
     description:
-      'A hub for future entrepreneurs and financial leaders, this college nurtures strategic thinking, ethical leadership, and practical business acumen.',
-    programs: ['BS Accountancy', 'BS Management Accounting', 'BS Business Administration'],
+      'Dedicated educators and researchers committed to academic excellence, mentorship, and the pursuit of knowledge.',
+    programs: ['Professorial Faculty', 'Associate Professors', 'Assistant Professors', 'Lecturers & Instructors'],
   },
   {
-    key: 'education',
-    name: 'College Of Education',
-    image: '/colleges/education.png',
+    key: 'staff',
+    name: 'Support Staff',
+    image: '/university/pillars-staff.png',
     description:
-      'Preparing mission-driven educators and mentors, this college develops professionals committed to transformative, learner-centered teaching.',
-    programs: ['BEEd', 'BSEd', 'BTLEd'],
-  },
-  {
-    key: 'graduate-school',
-    name: 'Graduate School',
-    image: '/colleges/graduate-school.png',
-    description:
-      'Advanced and interdisciplinary learning for professionals and researchers who seek deeper expertise and meaningful impact in their fields.',
-    programs: ["Master's Programs", 'Doctoral Programs', 'Professional Tracks'],
-  },
-  {
-    key: 'humanities-and-social-science',
-    name: 'College Of Humanities And Social Science',
-    image: '/colleges/humanities-and-social-science.png',
-    description:
-      'Rooted in human experience and social realities, this college fosters critical inquiry, communication, and civic engagement.',
-    programs: ['AB Communication', 'AB Political Science', 'AB Psychology'],
-  },
-  {
-    key: 'law',
-    name: 'College Of Law',
-    image: '/colleges/law.png',
-    description:
-      'Forming principled advocates and servant-leaders in the legal profession through rigorous scholarship and social justice orientation.',
-    programs: ['Juris Doctor'],
-  },
-  {
-    key: 'nursing',
-    name: 'College Of Nursing',
-    image: '/colleges/nursing.png',
-    description:
-      'A formation space for compassionate, globally competent healthcare professionals dedicated to service and holistic care.',
-    programs: ['BS Nursing'],
-  },
-  {
-    key: 'science-engineering-architecture',
-    name: 'College Of Science, Engineering, And Architecture',
-    image: '/colleges/science-engineering-architecture.png',
-    description:
-      'An innovation-driven environment where scientific rigor, engineering precision, and design thinking converge.',
-    programs: ['BS Architecture', 'Engineering Programs', 'Science Programs'],
+      'Essential team members who ensure the smooth operation of university services and maintain our academic environment.',
+    programs: ['Administrative Staff', 'Technical Support', 'Maintenance & Operations', 'Student Services'],
   },
 ];
 
-export default function CollegesPage() {
+export default function UniversityPage() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState<1 | -1>(1);
   const [viewportWidth, setViewportWidth] = useState(1200);
   const stepTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const touchStartXRef = useRef<number | null>(null);
-  const activeCollege = colleges[activeIndex];
+  const activeUniversity = universityItems[activeIndex];
   const isMobile = viewportWidth < 768;
 
   useEffect(() => {
@@ -112,7 +67,7 @@ export default function CollegesPage() {
   }, []);
 
   const stepToNext = (direction: 1 | -1) => {
-    setActiveIndex((prev) => (prev + direction + colleges.length) % colleges.length);
+    setActiveIndex((prev) => (prev + direction + universityItems.length) % universityItems.length);
   };
 
   const navigateByOffset = (offset: number) => {
@@ -165,17 +120,13 @@ export default function CollegesPage() {
   };
 
   const visibleItems = useMemo(() => {
-    const prev2 = (activeIndex - 2 + colleges.length) % colleges.length;
-    const prev1 = (activeIndex - 1 + colleges.length) % colleges.length;
-    const next1 = (activeIndex + 1) % colleges.length;
-    const next2 = (activeIndex + 2) % colleges.length;
+    const prev1 = (activeIndex - 1 + universityItems.length) % universityItems.length;
+    const next1 = (activeIndex + 1) % universityItems.length;
 
     return [
-      { index: prev2, offset: -2 },
       { index: prev1, offset: -1 },
       { index: activeIndex, offset: 0 },
       { index: next1, offset: 1 },
-      { index: next2, offset: 2 },
     ];
   }, [activeIndex]);
 
@@ -191,40 +142,13 @@ export default function CollegesPage() {
             onTouchEnd={handleTouchEnd}>
             <AnimatePresence initial={false}>
               {visibleItems.map(({ index, offset }) => {
-                const item = colleges[index];
+                const item = universityItems[index];
                 const isCenter = offset === 0;
-                const isFar = Math.abs(offset) === 2;
 
-                const baseTranslate = offset * (isCenter ? 0 : isFar ? (isMobile ? 150 : 380) : isMobile ? 130 : 439);
-                const rotateY = isCenter
-                  ? 0
-                  : isFar
-                    ? offset < 0
-                      ? isMobile
-                        ? 50
-                        : 56
-                      : isMobile
-                        ? -50
-                        : -56
-                    : offset < 0
-                      ? isMobile
-                        ? 28
-                        : 36
-                      : isMobile
-                        ? -28
-                        : -36;
-                const scale = isCenter
-                  ? isMobile
-                    ? 1.08
-                    : 1.06
-                  : isFar
-                    ? isMobile
-                      ? 0.86
-                      : 0.8
-                    : isMobile
-                      ? 0.96
-                      : 0.92;
-                const opacity = isCenter ? 1 : isFar ? (isMobile ? 0.78 : 0.68) : isMobile ? 0.95 : 0.9;
+                const baseTranslate = offset * (isCenter ? 0 : isMobile ? 130 : 439);
+                const rotateY = isCenter ? 0 : offset < 0 ? (isMobile ? 28 : 36) : isMobile ? -28 : -36;
+                const scale = isCenter ? (isMobile ? 1.08 : 1.06) : isMobile ? 0.96 : 0.92;
+                const opacity = isCenter ? 1 : isMobile ? 0.95 : 0.9;
                 const width = isCenter
                   ? isMobile
                     ? 'clamp(240px, 68vw, 320px)'
@@ -276,36 +200,36 @@ export default function CollegesPage() {
           <div className='mt-12 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-13 items-center'>
             <AnimatePresence mode='wait'>
               <motion.h1
-                key={`title-${activeCollege.key}`}
+                key={`title-${activeUniversity.key}`}
                 className='text-[#F4E590] leading-[0.9] text-center lg:text-right'
                 style={{ fontFamily: 'var(--font-beau-rivage)', fontSize: 'clamp(3rem,7vw,6.2rem)' }}
                 initial={{ opacity: 0, x: slideDirection * 50, filter: 'blur(6px)' }}
                 animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                 exit={{ opacity: 0, x: slideDirection * -40, filter: 'blur(4px)' }}
                 transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}>
-                {activeCollege.name
+                {activeUniversity.name
                   .split(' ')
-                  .slice(0, Math.ceil(activeCollege.name.split(' ').length / 2))
+                  .slice(0, Math.ceil(activeUniversity.name.split(' ').length / 2))
                   .join(' ')}
                 <br />
-                {activeCollege.name
+                {activeUniversity.name
                   .split(' ')
-                  .slice(Math.ceil(activeCollege.name.split(' ').length / 2))
+                  .slice(Math.ceil(activeUniversity.name.split(' ').length / 2))
                   .join(' ')}
               </motion.h1>
             </AnimatePresence>
 
             <AnimatePresence mode='wait'>
               <motion.div
-                key={`content-${activeCollege.key}`}
+                key={`content-${activeUniversity.key}`}
                 className='text-sm md:text-base text-white/85 max-w-xl'
                 initial={{ opacity: 0, x: slideDirection * 40 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: slideDirection * -30 }}
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
-                <p className='leading-relaxed'>{activeCollege.description}</p>
+                <p className='leading-relaxed'>{activeUniversity.description}</p>
                 <ul className='mt-4 space-y-1 text-white/80'>
-                  {activeCollege.programs.map((program) => (
+                  {activeUniversity.programs.map((program) => (
                     <li key={program}>· {program}</li>
                   ))}
                 </ul>

@@ -24,9 +24,9 @@ export function Navbar() {
           <Link href='/colleges' className='text-[#F4E590] hover:text-white transition-colors text-lg font-medium'>
             Colleges
           </Link>
-          <a href='#admin' className='text-[#F4E590] hover:text-white transition-colors text-lg font-medium'>
+          <Link href='/university' className='text-[#F4E590] hover:text-white transition-colors text-lg font-medium'>
             Administrator, Faculty, and Staff
-          </a>
+          </Link>
           <a href='#events' className='text-[#F4E590] hover:text-white transition-colors text-lg font-medium'>
             University Events
           </a>
@@ -64,18 +64,24 @@ export function Navbar() {
               style={{ fontFamily: 'var(--font-rosarivo)' }}>
               Messages
             </a>
+            <Link
+              href='/colleges'
+              className='text-[#F4E590] hover:text-white transition-colors text-sm font-medium'
+              style={{ fontFamily: 'var(--font-rosarivo)' }}>
+              Colleges
+            </Link>
             <a
               href='#graduates'
               className='text-[#F4E590] hover:text-white transition-colors text-sm font-medium'
               style={{ fontFamily: 'var(--font-rosarivo)' }}>
               Graduates
             </a>
-            <a
-              href='#admin'
+            <Link
+              href='/university'
               className='text-[#F4E590] hover:text-white transition-colors text-sm font-medium'
               style={{ fontFamily: 'var(--font-rosarivo)' }}>
-              Administrator, Faculty, and Staff
-            </a>
+              University
+            </Link>
             <a
               href='#events'
               className='text-[#F4E590] hover:text-white transition-colors text-sm font-medium'
