@@ -273,7 +273,7 @@ export default function CollegesPage() {
             </AnimatePresence>
           </div>
 
-          <div className='mt-12 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-13 items-center'>
+          <div className='mt-2 xl:mt-12 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-3 xl:gap-13 items-center'>
             <AnimatePresence mode='wait'>
               <motion.h1
                 key={`title-${activeCollege.key}`}

@@ -15,20 +15,20 @@ type UniversityItem = {
 
 const universityItems: UniversityItem[] = [
   {
+    key: 'faculty',
+    name: 'Administrator, Faculty, and Staff',
+    image: '/university/admin-faculty-staff.png',
+    description:
+      'Dedicated educators and researchers committed to academic excellence, mentorship, and the pursuit of knowledge.',
+    programs: ['Professorial Faculty', 'Associate Professors', 'Assistant Professors', 'Lecturers & Instructors'],
+  },
+  {
     key: 'administrators',
     name: 'University Administrators',
     image: '/university/deans.png',
     description:
       'Leading with vision and integrity, our administrators guide the institution toward academic excellence and innovation.',
     programs: ['President & Vice Presidents', 'Deans & Directors', 'Department Chairs', 'Administrative Services'],
-  },
-  {
-    key: 'faculty',
-    name: 'Faculty Members',
-    image: '/university/admin-faculty-staff.png',
-    description:
-      'Dedicated educators and researchers committed to academic excellence, mentorship, and the pursuit of knowledge.',
-    programs: ['Professorial Faculty', 'Associate Professors', 'Assistant Professors', 'Lecturers & Instructors'],
   },
   {
     key: 'staff',
@@ -197,7 +197,7 @@ export default function UniversityPage() {
             </AnimatePresence>
           </div>
 
-          <div className='mt-12 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-13 items-center'>
+          <div className='mt-2 xl:mt-12 grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-3 xl:gap-13 items-center'>
             <AnimatePresence mode='wait'>
               <motion.h1
                 key={`title-${activeUniversity.key}`}
