@@ -84,14 +84,14 @@ export function PresidentMessageSection() {
         span.textContent = char === ' ' ? '\u00A0' : char; // Use non-breaking space for spaces
         span.style.display = 'inline-block';
         span.style.opacity = '0';
-        span.style.transform = 'translateY(100px)';
+        span.style.transform = 'translateY(200px)';
         titleRef.current?.appendChild(span);
 
         // Character stagger animation: fade-up from below
         tl.to(
           span,
           {
-            y: -30,
+            y: 0,
             opacity: 1,
             duration: 3,
             ease: 'power3.inOut',
@@ -384,11 +384,6 @@ export function ValedictorianMessageSection() {
                 love more, and lead with integrity. The world awaits the tapestry we will continue to weave.
                 Congratulations, Batch 2024. Ad Majorem Dei Gloriam.
               </p>
-
-              {/* Valedictorian Signature */}
-              <div className='absolute bottom-8 left-0 right-0 flex justify-center text-[#c8a44a]'>
-                <img src='/pres-signature.png' alt='Valedictorian Signature' className='h-16 lg:h-20 opacity-90' />
-              </div>
             </div>
 
             {/* Closing quotation mark */}
