@@ -18,51 +18,51 @@ const collegesGraduatesData: Record<string, { collegeName: string; graduates: Gr
     graduates: [
       {
         id: '1',
-        name: 'FABAY, ALFREDO C.',
-        title: 'Vice President for Higher Education',
-        image: '/graduates/graduate-1.png',
+        name: 'ABAWAG, JAMES MARCEL A.',
+        title: 'Bachelor of Science in Computer Science',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Abawag%2C%20James%20Marcel%20A..webp',
       },
       {
         id: '2',
-        name: 'FABAY, ALFREDO C.',
-        title: 'Vice President for Higher Education',
-        image: '/graduates/graduate-2.png',
+        name: 'AGRAVANTE, MARL VINCENT C.',
+        title: 'Bachelor of Science in Computer Science',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Agravante%2C%20Marl%20Vincent%20C..webp',
       },
       {
         id: '3',
-        name: 'FABAY, ALFREDO C.',
-        title: 'Vice President for Higher Education',
-        image: '/graduates/graduate-2.png',
+        name: 'ALFONSO, ARIEL DOMINIC A.',
+        title: 'Bachelor of Science in Computer Science',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Alfonso%2C%20Ariel%20Dominic%20A..webp',
       },
       {
         id: '4',
-        name: 'FABAY, ALFREDO C.',
-        title: 'Vice President for Higher Education',
-        image: '/graduates/graduate-2.png',
+        name: 'BARTOLOME, EL JON JOSHUA G.',
+        title: 'Bachelor of Science in Computer Science',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Bartolome%2C%20El%20Jon%20Joshua%20G..webp',
       },
       {
         id: '5',
-        name: 'FABAY, ALFREDO C.',
-        title: 'Vice President for Higher Education',
-        image: '/graduates/graduate-2.png',
+        name: 'BETITO, JOSEPH RAPHAEL L.',
+        title: 'Bachelor of Science in Computer Science',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Betito%2C%20Joseph%20Raphael%20L..webp',
       },
       {
         id: '6',
-        name: 'FABAY, ALFREDO C.',
-        title: 'Vice President for Higher Education',
-        image: '/graduates/graduate-2.png',
+        name: 'CATORCE, HENRY JR. D.',
+        title: 'Bachelor of Science in Computer Science',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Catorce%2C%20Henry%20Jr.%20D..webp',
       },
       {
         id: '7',
-        name: 'FABAY, ALFREDO C.',
-        title: 'Vice President for Higher Education',
-        image: '/graduates/graduate-2.png',
+        name: 'CHUA, WILLIAN B.',
+        title: 'Bachelor of Science in Computer Science',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Chua%2C%20Willian%20B..webp',
       },
       {
         id: '8',
-        name: 'FABAY, ALFREDO C.',
-        title: 'Vice President for Higher Education',
-        image: '/graduates/graduate-2.png',
+        name: 'FERNANDEZ, JERU KIAN C.',
+        title: 'Bachelor of Science in Computer Science',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Fernandez%2C%20Jeru%20Kian%20C..webp',
       },
     ],
   },
@@ -186,16 +186,14 @@ export default function CollegeGraduatesPage() {
                 href={`/colleges/${collegeKey}/${graduate.id}`}
                 className='relative flex flex-col items-center group cursor-pointer'>
                 <div className='relative w-[280px] h-[360px] sm:w-[300px] sm:h-[400px]'>
-                  <Image src='/graduates-frame.png' alt='Frame' fill className='pointer-events-none' priority />
-                  <div className='absolute overflow-hidden'>
-                    <Image
+                  <div className='absolute inset-10 overflow-hidden z-0'>
+                    <img
                       src={graduate.image}
                       alt={graduate.name}
-                      fill
-                      className='object-contain group-hover:scale-105 transition-transform duration-300'
-                      sizes='(max-width: 640px) 280px, (max-width: 1024px) 300px, 300px'
+                      className='w-full h-full object-contain group-hover:scale-105 transition-transform duration-300'
                     />
                   </div>
+                  <Image src='/graduates-frame.png' alt='Frame' fill className='pointer-events-none z-10' priority />
                 </div>
                 <div className='mt-4 text-center'>
                   <h3

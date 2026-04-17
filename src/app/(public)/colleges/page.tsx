@@ -246,18 +246,12 @@ export default function CollegesPage() {
                 const opacity = isCenter ? 1 : isFar ? (isMobile ? 0.78 : 0.68) : isMobile ? 0.95 : 0.9;
                 const width = isCenter
                   ? isMobile
-                    ? 'clamp(240px, 68vw, 320px)'
+                    ? 'clamp(280px, 68vw, 380px)'
                     : 'min(40vw, 500px)'
                   : isMobile
-                    ? 'clamp(150px, 42vw, 220px)'
+                    ? 'clamp(200px, 42vw, 280px)'
                     : 'min(28vw, 360px)';
-                const height = isCenter
-                  ? isMobile
-                    ? 'clamp(320px, 88vw, 420px)'
-                    : 'min(56vw, 620px)'
-                  : isMobile
-                    ? 'clamp(220px, 58vw, 300px)'
-                    : 'min(40vw, 470px)';
+                const height = width;
 
                 return (
                   <motion.button
