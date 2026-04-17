@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Navbar } from '@/components/layout/nav';
 import { useParams } from 'next/navigation';
 import { useState, useRef, useEffect, useCallback } from 'react';
+import Lenis from 'lenis';
 
 type GraduateItem = {
   id: string;
@@ -21,49 +22,49 @@ const collegesGraduatesData: Record<string, { collegeName: string; graduates: Gr
         id: '1',
         name: 'ABAWAG, JAMES MARCEL A.',
         title: 'Bachelor of Science in Computer Science',
-        image: '/api/r2/files/triumph-2024/toga/TOGA_Abawag%2C%20James%20Marcel%20A..webp',
+        image: '',
       },
       {
         id: '2',
         name: 'AGRAVANTE, MARL VINCENT C.',
         title: 'Bachelor of Science in Computer Science',
-        image: '/api/r2/files/triumph-2024/toga/TOGA_Agravante%2C%20Marl%20Vincent%20C..webp',
+        image: '',
       },
       {
         id: '3',
         name: 'ALFONSO, ARIEL DOMINIC A.',
         title: 'Bachelor of Science in Computer Science',
-        image: '/api/r2/files/triumph-2024/toga/TOGA_Alfonso%2C%20Ariel%20Dominic%20A..webp',
+        image: '',
       },
       {
         id: '4',
         name: 'BARTOLOME, EL JON JOSHUA G.',
         title: 'Bachelor of Science in Computer Science',
-        image: '/api/r2/files/triumph-2024/toga/TOGA_Bartolome%2C%20El%20Jon%20Joshua%20G..webp',
+        image: '',
       },
       {
         id: '5',
         name: 'BETITO, JOSEPH RAPHAEL L.',
         title: 'Bachelor of Science in Computer Science',
-        image: '/api/r2/files/triumph-2024/toga/TOGA_Betito%2C%20Joseph%20Raphael%20L..webp',
+        image: '',
       },
       {
         id: '6',
         name: 'CATORCE, HENRY JR. D.',
         title: 'Bachelor of Science in Computer Science',
-        image: '/api/r2/files/triumph-2024/toga/TOGA_Catorce%2C%20Henry%20Jr.%20D..webp',
+        image: '',
       },
       {
         id: '7',
         name: 'CHUA, WILLIAN B.',
         title: 'Bachelor of Science in Computer Science',
-        image: '/api/r2/files/triumph-2024/toga/TOGA_Chua%2C%20Willian%20B..webp',
+        image: '',
       },
       {
         id: '8',
         name: 'FERNANDEZ, JERU KIAN C.',
         title: 'Bachelor of Science in Computer Science',
-        image: '/api/r2/files/triumph-2024/toga/TOGA_Fernandez%2C%20Jeru%20Kian%20C..webp',
+        image: '',
       },
       {
         id: '9',
@@ -273,6 +274,18 @@ export default function CollegeGraduatesPage() {
     setVisibleCount((prev) => Math.min(prev + BATCH_SIZE, allGraduates.length));
   }, [allGraduates.length]);
 
+  // Lenis
+  useEffect(() => {
+    const lenis = new Lenis();
+
+    function raf(time: any) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+  }, []);
+
   // Convert vertical wheel events into horizontal scroll
   useEffect(() => {
     const el = scrollRef.current;
@@ -322,23 +335,23 @@ export default function CollegeGraduatesPage() {
     <main className='min-h-screen bg-[#0a0a0a] text-white overflow-hidden'>
       <Navbar />
 
-      <section className='relative pt-36 sm:pt-44 md:pt-40 pb-20 pl-4 md:pl-8 xl:pl-25'>
+      <section className='relative pt-36 sm:pt-44 md:pt-40 pb-20'>
         <div
           ref={scrollRef}
-          className='grid grid-rows-2 gap-8 gap-x-15 overflow-x-auto pb-4 scrollbar-hide'
+          className='grid grid-rows-1 sm:grid-rows-2 gap-8 gap-x-15 overflow-x-auto pb-4 scrollbar-hide'
           style={{
             scrollBehavior: 'smooth',
             msOverflowStyle: 'none',
             scrollbarWidth: 'none',
             gridAutoFlow: 'column',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+            gridAutoColumns: '320px',
           }}>
           {visibleGraduates.map((graduate) => (
             <Link
               key={graduate.id}
               href={`/colleges/${collegeKey}/${graduate.id}`}
               className='relative flex flex-col items-center group cursor-pointer justify-self-center'>
-              <div className='relative w-[280px] h-[360px] sm:w-[300px] sm:h-[400px]'>
+              <div className='relative w-[320px] h-[400px] sm:w-[300px] sm:h-[400px]'>
                 <div className='absolute inset-10 overflow-hidden z-0'>
                   {graduate.image ? (
                     <img
