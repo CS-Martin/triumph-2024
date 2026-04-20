@@ -280,6 +280,7 @@ export default function CollegeGraduatesPage() {
 
     function raf(time: any) {
       lenis.raf(time);
+
       requestAnimationFrame(raf);
     }
 
@@ -298,7 +299,10 @@ export default function CollegeGraduatesPage() {
     };
 
     el.addEventListener('wheel', onWheel, { passive: false });
-    return () => el.removeEventListener('wheel', onWheel);
+
+    return () => {
+      el.removeEventListener('wheel', onWheel);
+    };
   }, []);
 
   // Intersection observer on sentinel element to load more graduates
@@ -332,20 +336,41 @@ export default function CollegeGraduatesPage() {
   }
 
   return (
-    <main className='min-h-screen bg-[#0a0a0a] text-white overflow-hidden'>
+    <main className='min-h-screen  text-white'>
       <Navbar />
 
-      <section className='relative pt-36 sm:pt-44 md:pt-40 pb-20'>
+      <section className='relative pt-36 sm:pt-44 md:pt-40 pb-20 min-h-screen overflow-hidden '>
+        <div className='absolute inset-0 w-full h-full pointer-events-none'>
+          <Image
+            src='/events/university-events-bg.webp'
+            alt='University Events Background'
+            fill
+            className='object-cover'
+            priority
+          />
+        </div>
+
+        <div className='absolute left-[-3%] w-[320px] h-[400px] sm:w-auto sm:h-[1200px] bottom-[-260px] pointer-events-none'>
+          <Image
+            src='/events/plant2.webp'
+            height={500}
+            width={500}
+            alt='Plant decoration'
+            className='w-full h-full object-cover'
+          />
+        </div>
+
         <div
           ref={scrollRef}
-          className='grid grid-rows-1 sm:grid-rows-2 gap-8 gap-x-15 overflow-x-auto pb-4 scrollbar-hide'
+          className='grid grid-rows-1 sm:grid-rows-2 gap-8 gap-x-15 overflow-x-auto pb-4 scrollbar-hide pl-98'
           style={{
-            scrollBehavior: 'smooth',
             msOverflowStyle: 'none',
             scrollbarWidth: 'none',
             gridAutoFlow: 'column',
             gridAutoColumns: '320px',
           }}>
+          {/* Decorative plant image at leftmost */}
+
           {visibleGraduates.map((graduate) => (
             <Link
               key={graduate.id}
