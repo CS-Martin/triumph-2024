@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Search, Menu, X } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,10 +12,10 @@ export function Navbar() {
     <nav className='fixed top-0 left-0 right-0 w-full py-9 px-2 xl:px-0 z-50'>
       <div className='xl:px-25 mx-auto flex items-center justify-between'>
         {/* Logo */}
-        <div className='flex items-center gap-3'>
-          <img src='/triumph-icon.png' alt='Triumph Icon' className='h-10 w-auto' />
-          <img src='/triumph-logo.png' alt='Triumph 2024' className='h-12 w-auto' />
-        </div>
+        <Link href='/' className='flex items-center gap-3'>
+          <Image src='/triumph-icon.png' alt='Triumph Icon' className='h-10 w-auto' width={40} height={40} />
+          <Image src='/triumph-logo.png' alt='Triumph 2024' className='h-12 w-auto' width={150} height={150} />
+        </Link>
 
         {/* Navigation Links - Desktop */}
         <div className='hidden lg:flex items-center gap-8' style={{ fontFamily: 'var(--font-rosarivo)' }}>

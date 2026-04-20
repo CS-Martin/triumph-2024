@@ -70,7 +70,7 @@ export default function IgnatiusScene({ progress }: IgnatiusSceneProps) {
         x,
         y,
         z,
-        duration: 5,
+        duration: 3,
         ease: 'power1.out',
       });
     };

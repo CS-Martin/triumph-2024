@@ -22,145 +22,127 @@ const collegesGraduatesData: Record<string, { collegeName: string; graduates: Gr
         id: '1',
         name: 'ABAWAG, JAMES MARCEL A.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Abawag, James Marcel A..webp',
       },
       {
         id: '2',
         name: 'AGRAVANTE, MARL VINCENT C.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Agravante, Marl Vincent C..webp',
       },
       {
         id: '3',
         name: 'ALFONSO, ARIEL DOMINIC A.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Alfonso, Ariel Dominic A..webp',
       },
       {
         id: '4',
         name: 'BARTOLOME, EL JON JOSHUA G.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Bartolome, El Jon Joshua G..webp',
       },
       {
         id: '5',
         name: 'BETITO, JOSEPH RAPHAEL L.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Betito, Joseph Raphael L..webp',
       },
       {
         id: '6',
         name: 'CATORCE, HENRY JR. D.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Catorce, Henry Jr. D..webp',
       },
       {
         id: '7',
         name: 'CHUA, WILLIAN B.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Chua, Willian B..webp',
       },
       {
         id: '8',
         name: 'FERNANDEZ, JERU KIAN C.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Fernandez, Jeru Kian C..webp',
       },
       {
         id: '9',
-        name: 'TEST GRADUATE 1',
+        name: 'GUERRERO, MARK JOSEPH R.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Guerrero, Mark Joseph R..webp',
       },
       {
         id: '10',
-        name: 'TEST GRADUATE 2',
+        name: 'LAGTO, SEAN REVON F.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Lagto, Sean Revon F..webp',
       },
       {
         id: '11',
-        name: 'TEST GRADUATE 3',
+        name: 'MANGUNAY, XIER GABRIEL M.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Mangunay, Xier Gabriel M..webp',
       },
       {
         id: '12',
-        name: 'TEST GRADUATE 4',
+        name: 'MARIANO, MARC THOMAS F.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Mariano, Marc Thomas F..webp',
       },
       {
         id: '13',
-        name: 'TEST GRADUATE 5',
+        name: 'NABUS, KENRICK JOHN HARVELL B.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Nabus, Kenrick John Harvell B..webp',
       },
       {
         id: '14',
-        name: 'TEST GRADUATE 6',
+        name: 'PALMA, KYLE JAMES G.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Palma, Kyle James G..webp',
       },
       {
         id: '15',
-        name: 'TEST GRADUATE 7',
+        name: 'PEREZ, MA. LOUISA A.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Perez, Ma. Louisa A..webp',
       },
       {
         id: '16',
-        name: 'TEST GRADUATE 8',
+        name: 'REMOS, MARY ANGELETTE M.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Remos, Mary Angelette M..webp',
       },
       {
         id: '17',
-        name: 'TEST GRADUATE 9',
+        name: 'TORDILLA, ALECZIA S.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Tordilla, Aleczia S..webp',
       },
       {
         id: '18',
-        name: 'TEST GRADUATE 10',
+        name: 'VIDOLA, JAMES EDWARD Q.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Vidola, James Edward Q..webp',
       },
       {
         id: '19',
-        name: 'TEST GRADUATE 11',
+        name: 'VILLASANTA, RAMONCITO D.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Villasanta, Ramoncito D.webp',
       },
       {
         id: '20',
-        name: 'TEST GRADUATE 12',
+        name: 'VIOLA, PAUL ENRICO N.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Viola, Paul Enrico N..webp',
       },
       {
         id: '21',
-        name: 'TEST GRADUATE 13',
+        name: 'WOOD, MATTHEW ETHAN G.',
         title: 'Bachelor of Science in Computer Science',
-        image: '',
-      },
-      {
-        id: '22',
-        name: 'TEST GRADUATE 14',
-        title: 'Bachelor of Science in Computer Science',
-        image: '',
-      },
-      {
-        id: '23',
-        name: 'TEST GRADUATE 15',
-        title: 'Bachelor of Science in Computer Science',
-        image: '',
-      },
-      {
-        id: '24',
-        name: 'TEST GRADUATE 16',
-        title: 'Bachelor of Science in Computer Science',
-        image: '',
+        image: '/api/r2/files/triumph-2024/toga/TOGA_Wood, Matthew Ethan G..webp',
       },
     ],
   },
@@ -265,6 +247,7 @@ export default function CollegeGraduatesPage() {
   const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
   const scrollRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const plantRef = useRef<HTMLDivElement>(null);
 
   const allGraduates = collegeData?.graduates ?? [];
   const visibleGraduates = allGraduates.slice(0, visibleCount);
@@ -305,6 +288,24 @@ export default function CollegeGraduatesPage() {
     };
   }, []);
 
+  // Sync plant horizontal position with scroll
+  useEffect(() => {
+    const el = scrollRef.current;
+    const plant = plantRef.current;
+    if (!el || !plant) return;
+
+    const updatePlantPosition = () => {
+      plant.style.transform = `translateX(-${el.scrollLeft}px)`;
+    };
+
+    el.addEventListener('scroll', updatePlantPosition);
+    updatePlantPosition();
+
+    return () => {
+      el.removeEventListener('scroll', updatePlantPosition);
+    };
+  }, []);
+
   // Intersection observer on sentinel element to load more graduates
   useEffect(() => {
     const sentinel = sentinelRef.current;
@@ -339,7 +340,7 @@ export default function CollegeGraduatesPage() {
     <main className='min-h-screen  text-white'>
       <Navbar />
 
-      <section className='relative pt-36 sm:pt-44 md:pt-40 pb-20 min-h-screen overflow-hidden '>
+      <section className='relative sm:pt-44 md:pt-40 min-h-screen overflow-hidden'>
         <div className='absolute inset-0 w-full h-full pointer-events-none'>
           <Image
             src='/events/university-events-bg.webp'
@@ -350,27 +351,22 @@ export default function CollegeGraduatesPage() {
           />
         </div>
 
-        <div className='absolute left-[-3%] w-[320px] h-[400px] sm:w-auto sm:h-[1200px] bottom-[-260px] pointer-events-none'>
-          <Image
-            src='/events/plant2.webp'
-            height={500}
-            width={500}
-            alt='Plant decoration'
-            className='w-full h-full object-cover'
-          />
+        {/* Plant decoration at bottom-left of page */}
+        <div
+          ref={plantRef}
+          className='absolute left-[-3%] w-[320px] h-[400px] sm:w-auto sm:h-[1200px] bottom-[-260px] pointer-events-none'>
+          <Image src='/events/plant2.webp' height={500} width={500} alt='Plant decoration' className='object-cover' />
         </div>
 
         <div
           ref={scrollRef}
-          className='grid grid-rows-1 sm:grid-rows-2 gap-8 gap-x-15 overflow-x-auto pb-4 scrollbar-hide pl-98'
+          className='grid grid-rows-1 sm:grid-rows-2 gap-8 gap-x-15 overflow-x-auto pb-4 scrollbar-hide pl-90'
           style={{
             msOverflowStyle: 'none',
             scrollbarWidth: 'none',
             gridAutoFlow: 'column',
             gridAutoColumns: '320px',
           }}>
-          {/* Decorative plant image at leftmost */}
-
           {visibleGraduates.map((graduate) => (
             <Link
               key={graduate.id}
