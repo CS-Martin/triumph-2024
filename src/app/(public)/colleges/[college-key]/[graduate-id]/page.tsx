@@ -233,13 +233,23 @@ export default function GraduateDetailPage() {
     <main className='min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden'>
       <Navbar />
 
-      <section className='relative pt-32 sm:pt-40 md:pt-44 pb-14 px-4 md:px-8'>
-        <div className='mx-auto max-w-[1400px]'>
-          <div className='grid grid-cols-1 lg:grid-cols-[700px_minmax(0,1fr)] gap-10 md:gap-14 items-center'>
-            <div className='flex justify-center lg:justify-start'>
-              <div className='relative w-[320px] h-[427px] sm:w-[400px] sm:h-[533px] md:w-[650px] md:h-[867px]'>
-                <div className='absolute inset-[12%] overflow-hidden z-0'>
-                  <Image src={graduate.image} alt={graduate.name} fill className='object-cover' priority />
+      <section className='relative pt-32 sm:pt-40 md:pt-40 pb-14 px-4 md:px-8 min-h-screen'>
+        <div className='absolute inset-0 w-full h-full pointer-events-none z-0'>
+          <Image
+            src='/events/university-events-bg.webp'
+            alt='University Events Background'
+            fill
+            className='object-cover'
+            priority
+          />
+        </div>
+
+        <div className='relative z-10 mx-auto'>
+          <div className='grid grid-cols-1 lg:grid-cols-[1200px_minmax(0,1fr)] gap-10 md:gap-14 items-center'>
+            <div className='flex justify-end'>
+              <div className='relative w-[320px] h-[427px] sm:w-[400px] sm:h-[533px] md:w-[800px] md:h-[1000px]'>
+                <div className='absolute inset-[13%] overflow-hidden z-0'>
+                  <img src={graduate.image} alt={graduate.name} className='h-full w-full object-contain' />
                 </div>
                 <Image
                   src='/graduates-frame.png'
@@ -254,7 +264,7 @@ export default function GraduateDetailPage() {
             <div className='text-center lg:text-left max-w-[640px]'>
               <h1
                 className='text-[#F4E590] leading-[0.88] mb-4'
-                style={{ fontFamily: 'var(--font-beau-rivage)', fontSize: 'clamp(2.6rem,5.8vw,6rem)' }}>
+                style={{ fontFamily: 'var(--font-beau-rivage)', fontSize: 'clamp(3rem,6vw,7rem)' }}>
                 {toTitleCase(graduate.name)}
               </h1>
 
