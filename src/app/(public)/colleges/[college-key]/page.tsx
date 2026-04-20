@@ -6,6 +6,8 @@ import { Navbar } from '@/components/layout/nav';
 import { useParams } from 'next/navigation';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import Lenis from 'lenis';
+import { motion } from 'motion/react';
+import gsap from 'gsap';
 
 type GraduateItem = {
   id: string;
@@ -367,12 +369,16 @@ export default function CollegeGraduatesPage() {
             gridAutoFlow: 'column',
             gridAutoColumns: '320px',
           }}>
-          {visibleGraduates.map((graduate) => (
+          {visibleGraduates.map((graduate, index) => (
             <Link
               key={graduate.id}
               href={`/colleges/${collegeKey}/${graduate.id}`}
               className='relative flex flex-col items-center group cursor-pointer justify-self-center'>
-              <div className='relative w-[320px] h-[400px] sm:w-[300px] sm:h-[400px]'>
+              <motion.div
+                className='relative w-[320px] h-[400px] sm:w-[300px] sm:h-[400px]'
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}>
                 <div className='absolute inset-10 overflow-hidden z-0'>
                   {graduate.image ? (
                     <img
@@ -387,15 +393,19 @@ export default function CollegeGraduatesPage() {
                   )}
                 </div>
                 <Image src='/graduates-frame.png' alt='Frame' fill className='pointer-events-none z-10' priority />
-              </div>
-              <div className='mt-4 text-center'>
+              </motion.div>
+              <motion.div
+                className='mt-4 text-center'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, delay: index * 0.05 + 0.2 }}>
                 <h3
                   className='text-[#F4E590] text-base group-hover:text-white transition-colors'
                   style={{ fontFamily: 'var(--font-rosarivo)' }}>
                   {graduate.name}
                 </h3>
                 <p className='text-white/80 text-sm mt-1'>{graduate.title}</p>
-              </div>
+              </motion.div>
             </Link>
           ))}
 

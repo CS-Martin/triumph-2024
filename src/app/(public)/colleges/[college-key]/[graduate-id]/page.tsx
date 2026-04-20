@@ -3,6 +3,9 @@
 import Image from 'next/image';
 import { Navbar } from '@/components/layout/nav';
 import { useParams } from 'next/navigation';
+import { useEffect, useRef } from 'react';
+import { motion } from 'motion/react';
+import gsap from 'gsap';
 
 type GraduateItem = {
   id: string;
@@ -217,6 +220,51 @@ export default function GraduateDetailPage() {
   const params = useParams();
   const graduateId = params['graduate-id'] as string;
   const graduate = graduatesData[graduateId];
+  const sectionRef = useRef<HTMLElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const frame = frameRef.current;
+    const text = textRef.current;
+    if (!section || !frame || !text) return;
+
+    const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    intro
+      .fromTo(frame, { autoAlpha: 0, y: 60, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.85 })
+      .fromTo(text, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.7 }, '-=0.45');
+
+    const handleMove = (event: MouseEvent) => {
+      const rect = frame.getBoundingClientRect();
+      const relX = (event.clientX - rect.left) / rect.width - 0.5;
+      const relY = (event.clientY - rect.top) / rect.height - 0.5;
+
+      gsap.to(frame, {
+        rotationY: relX * 3,
+        rotationX: relY * -2,
+        x: relX * 8,
+        y: relY * 5,
+        transformPerspective: 1200,
+        transformOrigin: 'center',
+        duration: 0.35,
+        ease: 'power2.out',
+      });
+    };
+
+    const handleLeave = () => {
+      gsap.to(frame, { x: 0, y: 0, rotationX: 0, rotationY: 0, duration: 0.5, ease: 'power3.out' });
+    };
+
+    section.addEventListener('mousemove', handleMove);
+    section.addEventListener('mouseleave', handleLeave);
+
+    return () => {
+      section.removeEventListener('mousemove', handleMove);
+      section.removeEventListener('mouseleave', handleLeave);
+      intro.kill();
+    };
+  }, [graduateId]);
 
   if (!graduate) {
     return (
@@ -233,7 +281,7 @@ export default function GraduateDetailPage() {
     <main className='min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden'>
       <Navbar />
 
-      <section className='relative pt-32 sm:pt-40 md:pt-40 pb-14 px-4 md:px-8 min-h-screen'>
+      <section ref={sectionRef} className='relative pt-32 sm:pt-40 md:pt-40 pb-14 px-4 md:px-8 min-h-screen'>
         <div className='absolute inset-0 w-full h-full pointer-events-none z-0'>
           <Image
             src='/events/university-events-bg.webp'
@@ -244,10 +292,16 @@ export default function GraduateDetailPage() {
           />
         </div>
 
-        <div className='relative z-10 mx-auto'>
+        <motion.div
+          className='relative z-10 mx-auto'
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.45 }}>
           <div className='grid grid-cols-1 lg:grid-cols-[1200px_minmax(0,1fr)] gap-10 md:gap-14 items-center'>
             <div className='flex justify-end'>
-              <div className='relative w-[320px] h-[427px] sm:w-[400px] sm:h-[533px] md:w-[800px] md:h-[1000px]'>
+              <div
+                ref={frameRef}
+                className='relative w-[320px] h-[427px] sm:w-[400px] sm:h-[533px] md:w-[800px] md:h-[1000px] will-change-transform'>
                 <div className='absolute inset-[13%] overflow-hidden z-0'>
                   <img src={graduate.image} alt={graduate.name} className='h-full w-full object-contain' />
                 </div>
@@ -261,27 +315,56 @@ export default function GraduateDetailPage() {
               </div>
             </div>
 
-            <div className='text-center lg:text-left max-w-[640px]'>
-              <h1
+            <motion.div
+              ref={textRef}
+              className='text-center lg:text-left max-w-[640px]'
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}>
+              <motion.h1
                 className='text-[#F4E590] leading-[0.88] mb-4'
-                style={{ fontFamily: 'var(--font-beau-rivage)', fontSize: 'clamp(3rem,6vw,7rem)' }}>
+                style={{ fontFamily: 'var(--font-beau-rivage)', fontSize: 'clamp(3rem,6vw,7rem)' }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}>
                 {toTitleCase(graduate.name)}
-              </h1>
+              </motion.h1>
 
-              <h2 className='text-white/90 text-base sm:text-lg md:text-xl font-semibold mb-5'>{graduate.title}</h2>
+              <motion.h2
+                className='text-white/90 text-base sm:text-lg md:text-xl font-semibold mb-5'
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: 0.38 }}>
+                {graduate.title}
+              </motion.h2>
 
-              <p className='text-white/80 text-sm sm:text-base leading-relaxed mb-5'>{graduate.description}</p>
+              <motion.p
+                className='text-white/80 text-sm sm:text-base leading-relaxed mb-5'
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: 0.45 }}>
+                {graduate.description}
+              </motion.p>
 
-              <p className='text-white/75 text-sm sm:text-base leading-relaxed mb-6'>
+              <motion.p
+                className='text-white/75 text-sm sm:text-base leading-relaxed mb-6'
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: 0.52 }}>
                 {graduate.achievements.slice(0, 2).join(' • ')}
-              </p>
+              </motion.p>
 
-              <p className='text-[#F4E590] text-xl sm:text-2xl' style={{ fontFamily: 'var(--font-beau-rivage)' }}>
+              <motion.p
+                className='text-[#F4E590] text-xl sm:text-2xl'
+                style={{ fontFamily: 'var(--font-beau-rivage)' }}
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, delay: 0.6 }}>
                 {graduate.achievements[graduate.achievements.length - 1]}
-              </p>
-            </div>
+              </motion.p>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </section>
     </main>
   );
