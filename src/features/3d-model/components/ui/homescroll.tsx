@@ -11,18 +11,15 @@ export default function HomeScroll() {
     const containerRef = useRef<HTMLDivElement>(null);
     const stickyRef = useRef<HTMLDivElement>(null);
 
-    // Model animation state — driven by GSAP, passed to R3F
-    const modelState = useRef({ x: 0, rotY: 0 });
-    const [modelX, setModelX] = useState(0);
-    const [modelRotY, setModelRotY] = useState(0);
+    // Scene progress — driven by GSAP, passed to R3F
+    const modelState = useRef({ progress: 0 });
+    const [progress, setProgress] = useState(0);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // Animate model from center (x=0) to right (x=2.5)
-            // and slightly rotate it to face left as it moves right
+            // Drive scene progress from 0 to 1 across the scroll range
             gsap.to(modelState.current, {
-                x: 2.5,
-                rotY: -0.4,
+                progress: 1,
                 ease: "none",
                 scrollTrigger: {
                     trigger: containerRef.current,
@@ -30,8 +27,7 @@ export default function HomeScroll() {
                     end: "bottom bottom",
                     scrub: 1.2, // smooth lag — feels cinematic
                     onUpdate: () => {
-                        setModelX(modelState.current.x);
-                        setModelRotY(modelState.current.rotY);
+                        setProgress(modelState.current.progress);
                     },
                 },
             });
@@ -61,7 +57,7 @@ export default function HomeScroll() {
                 </div>
 
                 {/* 3D Model */}
-                <IgnatiusScene modelX={modelX} modelRotY={modelRotY} />
+                <IgnatiusScene progress={progress} />
 
                 {/* Hero text — fades out as model moves */}
                 <div className="absolute bottom-16 left-12 z-20 max-w-lg pointer-events-none">
