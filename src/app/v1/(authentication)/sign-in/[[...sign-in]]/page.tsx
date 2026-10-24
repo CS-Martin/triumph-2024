@@ -14,16 +14,12 @@ export default function SignInPage() {
     // On mobile, show content immediately since there's no 3D scene
     useEffect(() => {
         const isMobile = window.innerWidth < 1024 // lg breakpoint
-        if (isMobile) {
-            // Show immediately on mobile
+        // Show immediately on mobile.
+        // Desktop: scene load delay (500ms) + zoom animation (2000ms) + buffer (300ms) = 2.8s
+        const timer = setTimeout(() => {
             setShowContent(true)
-        } else {
-            // Scene load delay (500ms) + zoom animation (2000ms) + buffer (300ms) = 2.8s
-            const timer = setTimeout(() => {
-                setShowContent(true)
-            }, 2800)
-            return () => clearTimeout(timer)
-        }
+        }, isMobile ? 0 : 2800)
+        return () => clearTimeout(timer)
     }, [])
 
     return (

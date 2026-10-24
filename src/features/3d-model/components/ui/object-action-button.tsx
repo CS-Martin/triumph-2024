@@ -7,18 +7,14 @@ import { useCameraStore } from "../../stores/camera-store"
 
 // Mapping of object IDs to their action links
 const OBJECT_LINKS: Record<string, string> = {
-    phonograph: "/events",
-    chair: "/colleges/computer-studies",
-    lamp: "/memories",
-    moon: "/evening-stories",
+    phonograph: "/v1/events",
+    chair: "/colleges",
 }
 
 // Mapping of object IDs to their action button labels
 const OBJECT_ACTION_LABELS: Record<string, string> = {
     phonograph: "Explore Events",
-    chair: "Explore College of Computer Studies",
-    lamp: "Explore College of Business Administration",
-    moon: "Explore College of Engineering",
+    chair: "Explore Colleges",
 }
 
 export default function ObjectActionButton() {

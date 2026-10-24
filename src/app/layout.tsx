@@ -34,7 +34,7 @@ const rosarivo = Rosarivo({
 
 export const metadata: Metadata = {
   title: 'Triumph Yearbook 2024',
-  description: 'Triumph Yearboowk 2024',
+  description: 'Triumph Yearbook 2024',
 };
 
 export default function RootLayout({
@@ -44,8 +44,8 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider
-      signInUrl={`/sign-in`}
-      signUpUrl={`/sign-up`}
+      signInUrl={`/v1/sign-in`}
+      signUpUrl={`/v1/sign-up`}
       signInFallbackRedirectUrl={`/`}
       signUpFallbackRedirectUrl={`/`}
       signUpForceRedirectUrl={`/`}

@@ -1,22 +1,21 @@
-import React, { useRef, useEffect } from 'react'
+import React from 'react'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import { GLTF } from 'three-stdlib'
+import type { ThreeElements } from '@react-three/fiber'
 
 type IgnatiusModelProps = GLTF & {
     nodes: { StIgnatius1_low: THREE.Mesh }
     materials: { Default: THREE.MeshStandardMaterial }
 }
 
-export function IgnatiusModel(props?: any) {
+export function IgnatiusModel(props?: ThreeElements['group']) {
     const gltfData = useGLTF('/model/ignatius-model.glb') as unknown as IgnatiusModelProps
     const { nodes, materials } = gltfData
-    const meshRef = useRef<THREE.Mesh>(null)
 
     return (
         <group {...props} dispose={null}>
             <mesh
-                ref={meshRef}
                 name="StIgnatius1_low"
                 castShadow
                 receiveShadow

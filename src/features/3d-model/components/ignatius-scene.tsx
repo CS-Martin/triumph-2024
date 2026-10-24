@@ -1,14 +1,23 @@
 'use client';
 
-import { Canvas, useFrame } from '@react-three/fiber';
-import { ContactShadows, Environment, OrbitControls, PerspectiveCamera, SpotLight } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
+import { ContactShadows, PerspectiveCamera } from '@react-three/drei';
 import { IgnatiusModel } from '@/features/3d-model/components/ignatius-model';
-import React, { Suspense, useEffect } from 'react';
-import gsap from 'gsap';
+import React from 'react';
+import * as THREE from 'three';
 
 interface IgnatiusSceneProps {
-  progress: number;
+  progress: React.RefObject<number>;
 }
+
+const CAMERA_POSITIONS: [number, number, number][] = [
+  [0, 0, 4.77],
+  [2, 2, 2.5],
+  [-2, 2, 3],
+];
+
+const SEGMENT_PROGRESS = 1 / 2;
+const CAMERA_DAMPING = 2;
 
 function RingLight() {
   return (
@@ -25,7 +34,7 @@ function RingLight() {
       <meshStandardMaterial
         color='#ffffff'
         emissive='#ffffff'
-        emissiveIntensity={0.5} // the glow intensity
+        emissiveIntensity={1.5} // the glow intensity — must exceed the bloom luminance threshold
         toneMapped={false} // critical — allows bloom to blow out properly
       />
     </mesh>
@@ -33,50 +42,34 @@ function RingLight() {
 }
 
 export default function IgnatiusScene({ progress }: IgnatiusSceneProps) {
-  const cameraRef = React.useRef<any>(null);
+  const cameraRef = React.useRef<THREE.PerspectiveCamera>(null);
+  const target = React.useRef(new THREE.Vector3(...CAMERA_POSITIONS[0]));
 
-  useFrame(() => {
-    cameraRef.current.lookAt(0, 0, 0);
+  useFrame((_, delta) => {
+    const camera = cameraRef.current;
+    if (!camera) return;
+
+    // Interpolate between camera waypoints based on scroll progress
+    const segmentIndex = Math.floor(progress.current / SEGMENT_PROGRESS);
+
+    // Prevent out of bounds access — hold the last target once past the final waypoint
+    if (segmentIndex < CAMERA_POSITIONS.length - 1) {
+      const percentage = (progress.current % SEGMENT_PROGRESS) / SEGMENT_PROGRESS;
+      const [startX, startY, startZ] = CAMERA_POSITIONS[segmentIndex];
+      const [endX, endY, endZ] = CAMERA_POSITIONS[segmentIndex + 1];
+
+      target.current.set(
+        startX + (endX - startX) * percentage,
+        startY + (endY - startY) * percentage,
+        startZ + (endZ - startZ) * percentage,
+      );
+    }
+
+    camera.position.x = THREE.MathUtils.damp(camera.position.x, target.current.x, CAMERA_DAMPING, delta);
+    camera.position.y = THREE.MathUtils.damp(camera.position.y, target.current.y, CAMERA_DAMPING, delta);
+    camera.position.z = THREE.MathUtils.damp(camera.position.z, target.current.z, CAMERA_DAMPING, delta);
+    camera.lookAt(0, 0, 0);
   });
-
-  useEffect(() => {
-    const updateCameraPosition = () => {
-      // Update camera position based on progress
-      const positions = [
-        [0, 0, 4.77],
-        [2, 2, 2.5],
-        [-2, 2, 3],
-      ];
-
-      const segmentProgress = 1 / 2;
-
-      const segmentIndex = Math.floor(progress / segmentProgress);
-
-      // Prevent out of bounds access
-      if (segmentIndex >= positions.length - 1) {
-        return;
-      }
-
-      const percentage = (progress % segmentProgress) / segmentProgress;
-
-      const [startX, startY, startZ] = positions[segmentIndex];
-      const [endX, endY, endZ] = positions[segmentIndex + 1];
-
-      const x = startX + (endX - startX) * percentage;
-      const y = startY + (endY - startY) * percentage;
-      const z = startZ + (endZ - startZ) * percentage;
-
-      gsap.to(cameraRef.current.position, {
-        x,
-        y,
-        z,
-        duration: 3,
-        ease: 'power1.out',
-      });
-    };
-
-    updateCameraPosition();
-  }, [progress, cameraRef.current]);
 
   return (
     <>
@@ -84,15 +77,6 @@ export default function IgnatiusScene({ progress }: IgnatiusSceneProps) {
 
       {/* Dark ambient — model should be mostly shadowed */}
       <ambientLight intensity={0.05} color='#0a0c10' />
-
-      {/* The ring light itself illuminates the scene */}
-      {/* Position matches the RingLight mesh so it feels like the ring is the source */}
-      {/* <pointLight
-                position={[0, 0.3, -0.5]}
-                intensity={0}
-                distance={10}
-                color="#ffffff"
-            /> */}
 
       {/* Subtle cool key from upper right — fills the face */}
       <directionalLight position={[0.5, 1, 0.4]} intensity={5} color='#b0bac8' />

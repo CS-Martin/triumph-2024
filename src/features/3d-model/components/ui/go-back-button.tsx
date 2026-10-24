@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from "motion/react"
 import { ArrowLeft } from "lucide-react"
-import { SignOutButton } from "@clerk/nextjs"
 
 type GoBackButtonProps = {
     isVisible: boolean
@@ -45,7 +44,6 @@ export default function GoBackButton({ isVisible, onClose }: GoBackButtonProps) 
                             Go Back
                         </span>
                     </motion.button>
-                    <SignOutButton />
                 </>
             )}
         </AnimatePresence>

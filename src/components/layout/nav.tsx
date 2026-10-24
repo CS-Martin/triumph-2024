@@ -13,24 +13,24 @@ export function Navbar() {
       <div className='xl:px-25 mx-auto flex items-center justify-between'>
         {/* Logo */}
         <Link href='/' className='flex items-center gap-3'>
-          <Image src='/triumph-icon.png' alt='Triumph Icon' className='h-10 w-auto' width={40} height={40} />
-          <Image src='/triumph-logo.png' alt='Triumph 2024' className='h-12 w-auto' width={150} height={150} />
+          <Image src='/triumph-icon.png' alt='Triumph Icon' className='h-10 w-auto' width={40} height={40} style={{ width: 'auto' }} />
+          <Image src='/triumph-logo.png' alt='Triumph 2024' className='h-12 w-auto' width={150} height={150} style={{ width: 'auto' }} />
         </Link>
 
         {/* Navigation Links - Desktop */}
         <div className='hidden lg:flex items-center gap-8' style={{ fontFamily: 'var(--font-rosarivo)' }}>
-          <a href='#messages' className='text-[#F4E590] hover:text-white transition-colors text-lg font-medium'>
+          <Link href='/#messages' className='text-[#F4E590] hover:text-white transition-colors text-lg font-medium'>
             Messages
-          </a>
+          </Link>
           <Link href='/colleges' className='text-[#F4E590] hover:text-white transition-colors text-lg font-medium'>
             Colleges
           </Link>
           <Link href='/university' className='text-[#F4E590] hover:text-white transition-colors text-lg font-medium'>
             Administrator, Faculty, and Staff
           </Link>
-          <a href='#events' className='text-[#F4E590] hover:text-white transition-colors text-lg font-medium'>
+          <Link href='/v1/events' className='text-[#F4E590] hover:text-white transition-colors text-lg font-medium'>
             University Events
-          </a>
+          </Link>
         </div>
 
         {/* Search Bar */}
@@ -59,36 +59,30 @@ export function Navbar() {
       {isMenuOpen && (
         <div className='lg:hidden mt-4 pb-4 border-t border-[#F4E590]/20'>
           <div className='flex flex-col gap-4 pt-4'>
-            <a
-              href='#messages'
+            <Link
+              href='/#messages'
               className='text-[#F4E590] hover:text-white transition-colors text-sm font-medium'
               style={{ fontFamily: 'var(--font-rosarivo)' }}>
               Messages
-            </a>
+            </Link>
             <Link
               href='/colleges'
               className='text-[#F4E590] hover:text-white transition-colors text-sm font-medium'
               style={{ fontFamily: 'var(--font-rosarivo)' }}>
               Colleges
             </Link>
-            <a
-              href='#graduates'
-              className='text-[#F4E590] hover:text-white transition-colors text-sm font-medium'
-              style={{ fontFamily: 'var(--font-rosarivo)' }}>
-              Graduates
-            </a>
             <Link
               href='/university'
               className='text-[#F4E590] hover:text-white transition-colors text-sm font-medium'
               style={{ fontFamily: 'var(--font-rosarivo)' }}>
               University
             </Link>
-            <a
-              href='#events'
+            <Link
+              href='/v1/events'
               className='text-[#F4E590] hover:text-white transition-colors text-sm font-medium'
               style={{ fontFamily: 'var(--font-rosarivo)' }}>
               University Events
-            </a>
+            </Link>
             {/* Mobile Search */}
             <div className='relative mt-2'>
               <input

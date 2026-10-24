@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useMessageReveal } from '@/hooks/use-message-reveal';
 
 export function WelcomeSection() {
   const titleRef = useRef<HTMLDivElement>(null);
@@ -11,26 +12,26 @@ export function WelcomeSection() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top top',
-        end: '20% top',
-        scrub: 1,
-      },
-    });
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: '20% top',
+          scrub: 1,
+        },
+      });
 
-    // Float up and fade animation
-    tl.to(titleRef.current, {
-      y: -30,
-      opacity: 0,
-      duration: 0.5,
-      ease: 'power2.out',
-    });
+      // Float up and fade animation
+      tl.to(titleRef.current, {
+        y: -30,
+        opacity: 0,
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+    }, sectionRef);
 
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -58,88 +59,10 @@ export function PresidentMessageSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top bottom',
-        end: '30% top',
-        scrub: 1,
-      },
-    });
-
-    if (titleRef.current) {
-      // Split title into individual characters
-      const text = titleRef.current.innerText || '';
-      const chars = text.split('');
-
-      // Clear the original text
-      titleRef.current.innerHTML = '';
-
-      // Wrap each character in a span
-      chars.forEach((char, index) => {
-        const span = document.createElement('span');
-        span.textContent = char === ' ' ? '\u00A0' : char; // Use non-breaking space for spaces
-        span.style.display = 'inline-block';
-        span.style.opacity = '0';
-        span.style.transform = 'translateY(200px)';
-        titleRef.current?.appendChild(span);
-
-        // Character stagger animation: fade-up from below
-        tl.to(
-          span,
-          {
-            y: 0,
-            opacity: 1,
-            duration: 3,
-            ease: 'power3.inOut',
-          },
-          index * 0.06,
-        );
-      });
-    }
-
-    // Text content fade animations
-    if (contentRef.current) {
-      const paragraphs = contentRef.current.querySelectorAll('p');
-
-      // Set initial opacity to 0
-      gsap.set(paragraphs, { opacity: 0 });
-
-      paragraphs.forEach((p, index) => {
-        // Fade in animation
-        tl.to(
-          p,
-          {
-            opacity: 1,
-            duration: 1,
-            ease: 'power2.out',
-          },
-          18 * 0.06 + index * 0.2,
-        );
-
-        // Fade out animation
-        tl.to(
-          p,
-          {
-            opacity: 0,
-            duration: 1,
-            ease: 'power2.in',
-          },
-          18 * 0.06 + index * 0.2 + 2,
-        );
-      });
-    }
-
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
-  }, []);
+  useMessageReveal({ sectionRef, titleRef, contentRef, fromY: 200, toY: 0 });
 
   return (
-    <section ref={sectionRef} className='h-screen relative overflow-hidden'>
+    <section id='messages' ref={sectionRef} className='h-screen relative overflow-hidden'>
       <div className='h-full flex items-center justify-between px-8 lg:px-16'>
         {/* Left side - President's Message */}
         <div className='pl-6 pr-4 sm:pl-8 sm:pr-6 md:pl-12 md:pr-8 lg:pl-80 lg:pr-12 xl:pl-96 xl:pr-16 max-w-7xl text-center'>
@@ -152,7 +75,7 @@ export function PresidentMessageSection() {
               fontSize: 'clamp(2rem, 6vw, 8rem)',
               lineHeight: 1,
             }}>
-            President's Message
+            President&apos;s Message
           </h2>
 
           <div className='relative'>
@@ -167,7 +90,7 @@ export function PresidentMessageSection() {
                 left: '-8rem',
                 lineHeight: 1,
               }}>
-              "
+              &quot;
             </span>
 
             <div ref={contentRef} className=' text-justify'>
@@ -204,6 +127,7 @@ export function PresidentMessageSection() {
 
               {/* President Signature */}
               <div className='absolute bottom-8 left-0 right-0 flex justify-center text-[#c8a44a]'>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src='/pres-signature.png' alt='President Signature' className='h-16 lg:h-20 opacity-90' />
               </div>
             </div>
@@ -218,7 +142,7 @@ export function PresidentMessageSection() {
                 right: '-8rem',
                 lineHeight: 1,
               }}>
-              "
+              &quot;
             </span>
           </div>
         </div>
@@ -232,85 +156,7 @@ export function ValedictorianMessageSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top bottom',
-        end: '30% top',
-        scrub: 1,
-      },
-    });
-
-    if (titleRef.current) {
-      // Split title into individual characters
-      const text = titleRef.current.innerText || '';
-      const chars = text.split('');
-
-      // Clear the original text
-      titleRef.current.innerHTML = '';
-
-      // Wrap each character in a span
-      chars.forEach((char, index) => {
-        const span = document.createElement('span');
-        span.textContent = char === ' ' ? '\u00A0' : char; // Use non-breaking space for spaces
-        span.style.display = 'inline-block';
-        span.style.opacity = '0';
-        span.style.transform = 'translateY(100px)';
-        titleRef.current?.appendChild(span);
-
-        // Character stagger animation: fade-up from below
-        tl.to(
-          span,
-          {
-            y: -30,
-            opacity: 1,
-            duration: 3,
-            ease: 'power3.inOut',
-          },
-          index * 0.06,
-        );
-      });
-    }
-
-    // Text content fade animations
-    if (contentRef.current) {
-      const paragraphs = contentRef.current.querySelectorAll('p');
-
-      // Set initial opacity to 0
-      gsap.set(paragraphs, { opacity: 0 });
-
-      paragraphs.forEach((p, index) => {
-        // Fade in animation
-        tl.to(
-          p,
-          {
-            opacity: 1,
-            duration: 1,
-            ease: 'power2.out',
-          },
-          18 * 0.06 + index * 0.2,
-        );
-
-        // Fade out animation
-        tl.to(
-          p,
-          {
-            opacity: 0,
-            duration: 1,
-            ease: 'power2.in',
-          },
-          18 * 0.06 + index * 0.2 + 2,
-        );
-      });
-    }
-
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
-  }, []);
+  useMessageReveal({ sectionRef, titleRef, contentRef, fromY: 100, toY: -30 });
 
   return (
     <section ref={sectionRef} className='h-screen relative overflow-hidden'>
@@ -348,7 +194,7 @@ export function ValedictorianMessageSection() {
                 right: 'clamp(-9rem, -4vw, -8rem)',
                 lineHeight: 1,
               }}>
-              "
+              &quot;
             </span>
 
             <div ref={contentRef} className='text-justify'>
@@ -397,7 +243,7 @@ export function ValedictorianMessageSection() {
                 left: '-8rem',
                 lineHeight: 1,
               }}>
-              "
+              &quot;
             </span>
           </div>
         </div>

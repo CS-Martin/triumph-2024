@@ -6,7 +6,8 @@ import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 export function useScrollAnimation(totalSections: number = 3) {
   const mainRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
+  // Progress is a ref so scrolling never re-renders the page (and the 3D canvas under it)
+  const progress = useRef(0);
   const [currentSection, setCurrentSection] = useState(0);
 
   const currentSectionRef = useRef(0);
@@ -22,55 +23,57 @@ export function useScrollAnimation(totalSections: number = 3) {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-    const sections = gsap.utils.toArray<HTMLElement>('section');
+    const ctx = gsap.context(() => {
+      const sections = gsap.utils.toArray<HTMLElement>('section', mainRef.current);
 
-    // Scene animation — moves the fixed canvas container left/right
-    gsap
-      .timeline({
-        scrollTrigger: {
-          trigger: mainRef.current,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 1,
-          onUpdate: (self) => {
-            setProgress(self.progress);
+      // Scene animation — moves the fixed canvas container left/right
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: mainRef.current,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 1,
+            onUpdate: (self) => {
+              progress.current = self.progress;
 
-            // Update current section based on progress
-            const sectionIndex = Math.floor(self.progress * totalSections);
-            if (sectionIndex !== currentSectionRef.current && sectionIndex < totalSections) {
-              currentSectionRef.current = sectionIndex;
-              setCurrentSection(sectionIndex);
-            }
+              // Update current section based on progress
+              const sectionIndex = Math.floor(self.progress * totalSections);
+              if (sectionIndex !== currentSectionRef.current && sectionIndex < totalSections) {
+                currentSectionRef.current = sectionIndex;
+                setCurrentSection(sectionIndex);
+              }
+            },
           },
-        },
-      })
-      .to(sceneRef.current, {
-        ease: 'none',
-        x: '25vw',
-      })
-      .to(sceneRef.current, {
-        ease: 'none',
-        x: '-25vw',
-      });
+        })
+        .to(sceneRef.current, {
+          ease: 'none',
+          x: '25vw',
+        })
+        .to(sceneRef.current, {
+          ease: 'none',
+          x: '-25vw',
+        });
 
-    scrollToSectionRef.current = (index: number) => {
-      if (index < 0 || index >= totalSections) return;
+      scrollToSectionRef.current = (index: number) => {
+        if (index < 0 || index >= totalSections) return;
 
-      isScrollingRef.current = true;
-      currentSectionRef.current = index;
-      setCurrentSection(index);
+        isScrollingRef.current = true;
+        currentSectionRef.current = index;
+        setCurrentSection(index);
 
-      gsap.to(window, {
-        scrollTo: { y: sections[index], autoKill: false },
-        duration: 1.5,
-        ease: 'power2.in',
-        onComplete: () => {
-          setTimeout(() => {
-            isScrollingRef.current = false;
-          }, 100);
-        },
-      });
-    };
+        gsap.to(window, {
+          scrollTo: { y: sections[index], autoKill: false },
+          duration: 1.5,
+          ease: 'power2.in',
+          onComplete: () => {
+            setTimeout(() => {
+              isScrollingRef.current = false;
+            }, 100);
+          },
+        });
+      };
+    }, mainRef);
 
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
@@ -98,7 +101,7 @@ export function useScrollAnimation(totalSections: number = 3) {
       window.removeEventListener('wheel', onWheel);
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchend', onTouchEnd);
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+      ctx.revert();
     };
   }, [totalSections]);
 

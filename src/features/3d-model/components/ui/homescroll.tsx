@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import IgnatiusScene from "@/features/3d-model/components/ignatius-scene";
@@ -12,23 +12,19 @@ export default function HomeScroll() {
     const stickyRef = useRef<HTMLDivElement>(null);
 
     // Scene progress — driven by GSAP, passed to R3F
-    const modelState = useRef({ progress: 0 });
-    const [progress, setProgress] = useState(0);
+    const progress = useRef(0);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
             // Drive scene progress from 0 to 1 across the scroll range
-            gsap.to(modelState.current, {
-                progress: 1,
+            gsap.to(progress, {
+                current: 1,
                 ease: "none",
                 scrollTrigger: {
                     trigger: containerRef.current,
                     start: "top top",
                     end: "bottom bottom",
                     scrub: 1.2, // smooth lag — feels cinematic
-                    onUpdate: () => {
-                        setProgress(modelState.current.progress);
-                    },
                 },
             });
         }, containerRef);

@@ -2,45 +2,24 @@
 
 import { motion, useTransform, useScroll, useInView } from "motion/react"
 import Image from "next/image"
-import { useEffect, useMemo, useRef, useState } from "react"
-import { Beau_Rivage } from "next/font/google"
+import { useMemo, useRef } from "react"
+import { useRouter } from "next/navigation"
 import GoBackButton from "@/features/3d-model/components/ui/go-back-button"
 import { events } from "@/features/event/lib/constants"
-
-const beau_rivage = Beau_Rivage({
-    variable: "--font-beau-rivage",
-    subsets: ["latin"],
-    weight: ["400"],
-});
-
-// Sample events data - replace with actual data source
-
+import { useViewportWidth } from "@/hooks/use-viewport-width"
 
 export default function EventsPage() {
-    const [screenSize, setScreenSize] = useState<number | null>(null)
+    const router = useRouter()
+    // Default to a desktop width while the real screen size is being determined
+    const screenSize = useViewportWidth(1920)
     const targetRef = useRef<HTMLDivElement>(null)
 
     const { scrollYProgress } = useScroll({
         target: targetRef,
     })
 
-    useEffect(() => {
-        // Set initial screen size
-        setScreenSize(window.innerWidth)
-
-        const handleResize = () => {
-            setScreenSize(window.innerWidth)
-        }
-        window.addEventListener('resize', handleResize)
-        return () => window.removeEventListener('resize', handleResize)
-    }, [])
-
     // Calculate scroll multiplier based on screen size
     const scrollMultiplier = useMemo(() => {
-        if (screenSize === null) {
-            // Default to desktop value while screen size is being determined
-            return 100
-        }
         if (screenSize < 768) {
             // Mobile
             return 196
@@ -111,9 +90,7 @@ export default function EventsPage() {
                     {/* Go Back Button */}
                     <GoBackButton
                         isVisible={true}
-                        onClose={() => {
-                            window.location.href = '/'
-                        }}
+                        onClose={() => router.push('/')}
                     />
                 </div>
             </section>
@@ -225,7 +202,8 @@ const EventPage = ({ event }: EventPageProps) => {
                                 }}
                             >
                                 <motion.h3
-                                    className={`text-lg md:text-6xl text-center font-bold text-[#F4E590] mb-1 md:mb-2 ${beau_rivage.variable} ${beau_rivage.className}`}
+                                    className="text-lg md:text-6xl text-center font-bold text-[#F4E590] mb-1 md:mb-2"
+                                    style={{ fontFamily: 'var(--font-beau-rivage)' }}
                                     initial={{ opacity: 0, y: 20, letterSpacing: "-0.05em" }}
                                     animate={isInView ? {
                                         opacity: 1,
