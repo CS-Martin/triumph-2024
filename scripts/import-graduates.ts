@@ -8,6 +8,7 @@ import { CSV_SCHOOL_LEVEL_TO_ID, SchoolLevelId } from "../convex/lib/schoolLevel
 // Default is a dry run: it only writes .local/import-report.json and prints a summary.
 
 type ImportRow = {
+    uuid: string;
     first_name: string;
     last_name: string;
     middle_initial?: string;
@@ -155,6 +156,7 @@ const main = async () => {
         slugsSeen.set(seenKey, count);
 
         rows.push({
+            uuid: crypto.randomUUID(),
             first_name: first,
             last_name: last,
             middle_initial: middle,
@@ -270,6 +272,19 @@ const main = async () => {
 
     if (!push) return console.log("Dry run only. Re-run with --push to write to Convex.");
     if (problems.length) throw new Error("Fix CSV problems before pushing.");
+
+    const keysResult = spawnSync(
+        "bunx",
+        ["convex", "run", ...(prod ? ["--prod"] : []), "users/index:listKeys"],
+        { encoding: "utf8" },
+    );
+    if (keysResult.status !== 0) throw new Error(`listKeys failed:\n${keysResult.stderr}`);
+    const existing = new Map<string, string>(
+        (JSON.parse(keysResult.stdout.trim()) as { college: number; slug: string; uuid: string }[]).map(
+            (k) => [`${k.college}/${k.slug}`, k.uuid],
+        ),
+    );
+    for (const row of rows) row.uuid = existing.get(`${row.college}/${row.slug}`) ?? row.uuid;
 
     for (let i = 0; i < rows.length; i += BATCH_SIZE) {
         const batch = rows.slice(i, i + BATCH_SIZE);

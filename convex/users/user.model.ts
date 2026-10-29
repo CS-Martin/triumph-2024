@@ -4,6 +4,9 @@ import { collegeValidator } from "../lib/colleges";
 import { schoolLevelValidator } from "../lib/schoolLevels";
 
 export const userFields = {
+    // Stable public identifier (opaque; survives re-imports and deployment moves)
+    uuid: v.string(),
+
     // Identity / Clerk link (set when the account is provisioned)
     clerk_id: v.optional(v.string()),
     username: v.optional(v.string()),
@@ -33,6 +36,7 @@ export const userFields = {
 };
 
 export const users = defineTable(userFields)
+    .index("by_uuid", ["uuid"])
     .index("by_clerk_id", ["clerk_id"])
     .index("by_username", ["username"])
     .index("by_college_slug", ["college", "slug"])

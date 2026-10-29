@@ -12,6 +12,7 @@ import type * as lib_auth from "../lib/auth.js";
 import type * as lib_colleges from "../lib/colleges.js";
 import type * as lib_schoolLevels from "../lib/schoolLevels.js";
 import type * as users_index from "../users/index.js";
+import type * as users_mutations_backfillUuids from "../users/mutations/backfillUuids.js";
 import type * as users_mutations_importBatch from "../users/mutations/importBatch.js";
 import type * as users_mutations_linkAccount from "../users/mutations/linkAccount.js";
 import type * as users_mutations_markPasswordChanged from "../users/mutations/markPasswordChanged.js";
@@ -19,6 +20,7 @@ import type * as users_publicProfile from "../users/publicProfile.js";
 import type * as users_queries_getByCollegePaginated from "../users/queries/getByCollegePaginated.js";
 import type * as users_queries_getBySlug from "../users/queries/getBySlug.js";
 import type * as users_queries_getMe from "../users/queries/getMe.js";
+import type * as users_queries_listKeys from "../users/queries/listKeys.js";
 import type * as users_queries_search from "../users/queries/search.js";
 
 import type {
@@ -32,6 +34,7 @@ declare const fullApi: ApiFromModules<{
   "lib/colleges": typeof lib_colleges;
   "lib/schoolLevels": typeof lib_schoolLevels;
   "users/index": typeof users_index;
+  "users/mutations/backfillUuids": typeof users_mutations_backfillUuids;
   "users/mutations/importBatch": typeof users_mutations_importBatch;
   "users/mutations/linkAccount": typeof users_mutations_linkAccount;
   "users/mutations/markPasswordChanged": typeof users_mutations_markPasswordChanged;
@@ -39,6 +42,7 @@ declare const fullApi: ApiFromModules<{
   "users/queries/getByCollegePaginated": typeof users_queries_getByCollegePaginated;
   "users/queries/getBySlug": typeof users_queries_getBySlug;
   "users/queries/getMe": typeof users_queries_getMe;
+  "users/queries/listKeys": typeof users_queries_listKeys;
   "users/queries/search": typeof users_queries_search;
 }>;
 

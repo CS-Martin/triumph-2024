@@ -3,6 +3,7 @@ import { MutationCtx } from "../../_generated/server";
 import { userFields } from "../user.model";
 
 const importRow = v.object({
+    uuid: userFields.uuid,
     first_name: userFields.first_name,
     last_name: userFields.last_name,
     middle_initial: userFields.middle_initial,
@@ -32,7 +33,9 @@ export const importBatchHandler = async (ctx: MutationCtx, args: { rows: Infer<t
             .withIndex("by_college_slug", (q) => q.eq("college", row.college).eq("slug", row.slug))
             .unique();
         if (existing) {
-            await ctx.db.patch(existing._id, row);
+            const { uuid, ...patch } = row;
+            void uuid; // never overwrite a uuid on update
+            await ctx.db.patch(existing._id, patch);
             updated++;
         } else {
             await ctx.db.insert("users", { ...row, is_active: true, must_change_password: true, is_published: true });
