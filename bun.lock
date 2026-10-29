@@ -7,7 +7,8 @@
       "dependencies": {
         "@aws-sdk/client-s3": "^3.1156.0",
         "@bprogress/next": "^3.2.12",
-        "@clerk/nextjs": "^7.9.20",
+        "@clerk/nextjs": "^7.9.22",
+        "@clerk/react": "^6.18.3",
         "@react-three/drei": "^10.7.9",
         "@react-three/fiber": "^9.8.2",
         "@react-three/postprocessing": "^3.2.2",
@@ -124,13 +125,13 @@
 
     "@cacheable/utils": ["@cacheable/utils@2.5.0", "", { "dependencies": { "hashery": "^1.5.1", "keyv": "^5.6.0" } }, "sha512-buipgOVDkkPXNR5+xBpDw7Zk2n1EvU7qBJCNUcL7rhQ//kfpOXPAvQ511Os0vpLYJ1pZnvudNytkQt2hst3wqA=="],
 
-    "@clerk/backend": ["@clerk/backend@3.26.2", "", { "dependencies": { "@clerk/shared": "^4.41.1", "standardwebhooks": "^1.0.0", "tslib": "2.8.1" } }, "sha512-IQAeEPmAy1QXzQULVYPf4yato8isGoI5XpoaJoCkV9GC+22w+GgSWP3gCJ3wcaPcSxeEHPkQck9sLwRsW7ZYTw=="],
+    "@clerk/backend": ["@clerk/backend@3.26.4", "", { "dependencies": { "@clerk/shared": "^4.43.0", "standardwebhooks": "^1.0.0", "tslib": "2.8.1" } }, "sha512-zvXqCfOKhgkY7LonpE1p8tLO+XOciHKTJ9K3e3KykxuiSPwnxKeKVltJMO8xu4LPhF/joFRY/B1cPQM06/f6AQ=="],
 
-    "@clerk/nextjs": ["@clerk/nextjs@7.9.20", "", { "dependencies": { "@clerk/backend": "^3.26.2", "@clerk/react": "^6.18.1", "@clerk/shared": "^4.41.1", "server-only": "0.0.1", "tslib": "2.8.1" }, "peerDependencies": { "next": "^15.2.8 || ^15.3.8 || ^15.4.10 || ^15.5.9 || ^15.6.0-0 || ^16.0.10 || ^16.1.0-0", "react": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0", "react-dom": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0" } }, "sha512-4Pw9P2L5ySAout2rb87ZZSrHEq850bbJ0IuV859h19ToIMzD9+IgIbLwSsKrxHxgmO3qN/iBbckt0hmTrMLVDQ=="],
+    "@clerk/nextjs": ["@clerk/nextjs@7.9.22", "", { "dependencies": { "@clerk/backend": "^3.26.4", "@clerk/react": "^6.18.3", "@clerk/shared": "^4.43.0", "server-only": "0.0.1", "tslib": "2.8.1" }, "peerDependencies": { "next": "^15.2.8 || ^15.3.8 || ^15.4.10 || ^15.5.9 || ^15.6.0-0 || ^16.0.10 || ^16.1.0-0", "react": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0", "react-dom": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0" } }, "sha512-xyD6YqJCPanzngXJNjjtvRZykLVZMkNARiIcXGIi2rzLYKJQtstQ9YcuWVCid9tguD20YhFnagp507VIphVx+Q=="],
 
-    "@clerk/react": ["@clerk/react@6.18.1", "", { "dependencies": { "@clerk/shared": "^4.41.1", "tslib": "2.8.1" }, "peerDependencies": { "react": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0", "react-dom": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0" } }, "sha512-vCd3qctGaBJ7p7bnf2SLI4ynweaDHqiEgXbFaPVHjY3kduG5uPzHAFE42VwJazXbV81P56rhus3BYna0D1l62g=="],
+    "@clerk/react": ["@clerk/react@6.18.3", "", { "dependencies": { "@clerk/shared": "^4.43.0", "tslib": "2.8.1" }, "peerDependencies": { "react": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0", "react-dom": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0" } }, "sha512-WuKtyxT3zEKuEBfmzmK2DnEXw65r0meRd4//wTmhXrPwKgEHZmtBtaIFK8CAybxCM4wl4QsoCOEXXEk1ngo+yw=="],
 
-    "@clerk/shared": ["@clerk/shared@4.41.1", "", { "dependencies": { "@tanstack/query-core": "^5.101.4", "dequal": "2.0.3", "glob-to-regexp": "0.4.1", "js-cookie": "3.0.8" }, "peerDependencies": { "react": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0", "react-dom": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0" }, "optionalPeers": ["react", "react-dom"] }, "sha512-qxy8bzGMV6EGuKqnfEVm/+f9yGncUyOJhxdbM10X52PoMiALJ5VOH+c3C427ETkupYalF81eBlg7aBH50AtbNA=="],
+    "@clerk/shared": ["@clerk/shared@4.43.0", "", { "dependencies": { "@tanstack/query-core": "^5.101.4", "dequal": "2.0.3", "glob-to-regexp": "0.4.1", "js-cookie": "3.0.8" }, "peerDependencies": { "react": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0", "react-dom": "^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0" }, "optionalPeers": ["react", "react-dom"] }, "sha512-EtFANpM+o5pt4zeTh1ww+oYk8qg53Plofl5jA67gi1HYVxsiVvkKmfPU0BFAf54vOcTyzvpZxRvffEGTI0hsiw=="],
 
     "@dimforge/rapier3d-compat": ["@dimforge/rapier3d-compat@0.12.0", "", {}, "sha512-uekIGetywIgopfD97oDL5PfeezkFpNhwlzlaEYNOA0N6ghdsOvh/HYjSMek5Q2O1PYvRSDFcqFVJl4r4ZBwOow=="],
 

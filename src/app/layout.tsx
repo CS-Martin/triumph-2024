@@ -7,6 +7,7 @@ import { LoadingProgressProvider } from '@/providers/bprogress.provider';
 import { Toaster } from '@/components/ui/sonner';
 import '@/styles/clerk.css';
 import '@/styles/fireflies.css';
+import ConvexClientProvider from '@/providers/convex-with-clerk.provider';
 
 const beauRivage = Beau_Rivage({
   variable: '--font-beau-rivage',
@@ -36,6 +37,7 @@ export const metadata: Metadata = {
   title: 'Triumph Yearbook 2024',
   description: 'Triumph Yearbook 2024',
 };
+
 
 export default function RootLayout({
   children,
@@ -67,7 +69,7 @@ export default function RootLayout({
           className={`${montaguSlab.className} ${montaguSlab.variable} ${montserrat.className} ${montserrat.variable} ${beauRivage.className} ${beauRivage.variable} ${rosarivo.className} ${rosarivo.variable} antialiased`}>
           <ThemeProvider attribute='class' defaultTheme='dark' enableSystem>
             <LoadingProgressProvider>
-              {children}
+              <ConvexClientProvider>{children}</ConvexClientProvider>
               <Toaster position='top-right' richColors />
             </LoadingProgressProvider>
           </ThemeProvider>

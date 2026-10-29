@@ -13,6 +13,8 @@ import type * as lib_colleges from "../lib/colleges.js";
 import type * as lib_schoolLevels from "../lib/schoolLevels.js";
 import type * as users_index from "../users/index.js";
 import type * as users_mutations_importBatch from "../users/mutations/importBatch.js";
+import type * as users_mutations_linkAccount from "../users/mutations/linkAccount.js";
+import type * as users_mutations_markPasswordChanged from "../users/mutations/markPasswordChanged.js";
 import type * as users_publicProfile from "../users/publicProfile.js";
 import type * as users_queries_getByCollegePaginated from "../users/queries/getByCollegePaginated.js";
 import type * as users_queries_getBySlug from "../users/queries/getBySlug.js";
@@ -31,6 +33,8 @@ declare const fullApi: ApiFromModules<{
   "lib/schoolLevels": typeof lib_schoolLevels;
   "users/index": typeof users_index;
   "users/mutations/importBatch": typeof users_mutations_importBatch;
+  "users/mutations/linkAccount": typeof users_mutations_linkAccount;
+  "users/mutations/markPasswordChanged": typeof users_mutations_markPasswordChanged;
   "users/publicProfile": typeof users_publicProfile;
   "users/queries/getByCollegePaginated": typeof users_queries_getByCollegePaginated;
   "users/queries/getBySlug": typeof users_queries_getBySlug;

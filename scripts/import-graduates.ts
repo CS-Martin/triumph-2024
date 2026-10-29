@@ -163,7 +163,7 @@ const main = async () => {
             program,
             major: clean(cell(record, "major")),
             college,
-            has_toga: false,
+            has_toga: (cell(record, "has_toga") ?? "").trim().toLowerCase() !== "none",
             write_up: clean(cell(record, "write_up")),
             achievements: splitList(cell(record, "achievements")),
             affiliations: splitList(cell(record, "affiliations")),
@@ -211,7 +211,7 @@ const main = async () => {
             const f = squash(row.first_name);
             const m = squash(row.middle_initial ?? "");
             const s = squash(row.suffix ?? "");
-            for (const candidate of [l + f + m + s, l + f + m, l + f + s, l + f]) {
+            for (const candidate of [l + f + m + s, l + f + s + m, l + f + m, l + f + s, l + f]) {
                 const found = index.get(candidate);
                 if (found?.length === 1) return found[0];
                 if (found && found.length > 1) return "ambiguous" as const;
@@ -230,15 +230,14 @@ const main = async () => {
                 if (duplicate) return "ambiguous" as const;
                 return match(index, row);
             };
-            const t = resolve(toga, override?.toga_key);
+            const t = row.has_toga ? resolve(toga, override?.toga_key) : undefined;
             const c = resolve(creative, override?.creative_key);
             if (t === "ambiguous" || c === "ambiguous") report.ambiguous.push(label);
             if (typeof t === "string" && t !== "ambiguous") {
                 row.toga_key = t;
-                row.has_toga = true;
                 used.add(t);
                 report.toga_matched++;
-            } else if (t === undefined) report.missing_toga.push(label);
+            } else if (t === undefined && row.has_toga) report.missing_toga.push(label);
             if (typeof c === "string" && c !== "ambiguous") {
                 row.creative_key = c;
                 used.add(c);
