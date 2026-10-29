@@ -32,7 +32,7 @@ export function SetPasswordForm() {
     e.preventDefault();
     if (!user || busy) return;
     if (newPassword !== confirmPassword) return setError('Passwords do not match');
-    if (newPassword.length < 8) return setError('Password must be at least 8 characters');
+    if (newPassword.length < 15) return setError('Password must be at least 15 characters');
 
     setBusy(true);
     setError(undefined);
@@ -44,8 +44,14 @@ export function SetPasswordForm() {
       });
       await markChanged();
       router.push('/graduates');
-    } catch {
-      setError('Could not update password. Check your temporary password and try again.');
+    } catch (e) {
+      const clerkError = (e as { errors?: { long_message?: string; message?: string }[] })
+        ?.errors?.[0];
+      setError(
+        clerkError?.long_message ??
+          clerkError?.message ??
+          'Could not update password. Check your temporary password and try again.',
+      );
       setBusy(false);
     }
   };
@@ -70,9 +76,9 @@ export function SetPasswordForm() {
         type='password'
         value={newPassword}
         onChange={(e) => setNewPassword(e.target.value)}
-        placeholder='New password'
+        placeholder='New password (15+ characters)'
         required
-        minLength={8}
+        minLength={15}
         autoComplete='new-password'
         className='rounded-full border-4 border-[#F4E590] bg-[#343434] px-4 py-3 text-white'
       />
@@ -82,7 +88,7 @@ export function SetPasswordForm() {
         onChange={(e) => setConfirmPassword(e.target.value)}
         placeholder='Confirm new password'
         required
-        minLength={8}
+        minLength={15}
         autoComplete='new-password'
         className='rounded-full border-4 border-[#F4E590] bg-[#343434] px-4 py-3 text-white'
       />
