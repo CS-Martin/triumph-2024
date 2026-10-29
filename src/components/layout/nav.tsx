@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Search, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { SignOutButton } from '@clerk/nextjs';
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,6 +32,12 @@ export function Navbar() {
           <Link href='/v1/events' className='text-[#F4E590] hover:text-white transition-colors text-lg font-medium'>
             University Events
           </Link>
+          {/* temporary sign out */}
+          <SignOutButton redirectUrl='/'>
+            <button className='text-[#F4E590] hover:text-white transition-colors text-lg font-medium'>
+              Sign out
+            </button>
+          </SignOutButton>
         </div>
 
         {/* Search Bar */}
@@ -83,6 +90,14 @@ export function Navbar() {
               style={{ fontFamily: 'var(--font-rosarivo)' }}>
               University Events
             </Link>
+            {/* temporary sign out */}
+            <SignOutButton redirectUrl='/'>
+              <button
+                className='text-[#F4E590] hover:text-white transition-colors text-sm font-medium'
+                style={{ fontFamily: 'var(--font-rosarivo)' }}>
+                Sign out
+              </button>
+            </SignOutButton>
             {/* Mobile Search */}
             <div className='relative mt-2'>
               <input

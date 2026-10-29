@@ -4,35 +4,34 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Navbar } from '@/components/layout/nav';
 import { useParams } from 'next/navigation';
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect } from 'react';
 import Lenis from 'lenis';
 import { motion } from 'motion/react';
-import { COLLEGE_GRADUATES } from '@/features/college/lib/graduates';
+import { usePaginatedQuery } from 'convex/react';
+import { api } from '@convex/_generated/api';
+import { COLLEGE_ID_BY_KEY } from '@convex/lib/colleges';
 
-const BATCH_SIZE = 8;
+const BATCH_SIZE = 12;
 
 export default function CollegeGraduatesPage() {
   const params = useParams();
   const collegeKey = params['college-key'] as string;
-  const collegeData = COLLEGE_GRADUATES[collegeKey];
+  const college = COLLEGE_ID_BY_KEY[collegeKey];
 
-  const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
+  const { results: graduates, status, loadMore } = usePaginatedQuery(
+    api.users.index.getByCollegePaginated,
+    college === undefined ? 'skip' : { college },
+    { initialNumItems: BATCH_SIZE },
+  );
+
   const scrollRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const plantRef = useRef<HTMLDivElement>(null);
-
-  const totalCount = collegeData?.graduates.length ?? 0;
-  const visibleGraduates = collegeData?.graduates.slice(0, visibleCount) ?? [];
-  const hasMore = visibleCount < totalCount;
-
-  const loadMore = useCallback(() => {
-    setVisibleCount((prev) => Math.min(prev + BATCH_SIZE, totalCount));
-  }, [totalCount]);
+  const hasMore = status === 'CanLoadMore';
 
   // Lenis
   useEffect(() => {
     const lenis = new Lenis({ autoRaf: true });
-
     return () => lenis.destroy();
   }, []);
 
@@ -40,18 +39,13 @@ export default function CollegeGraduatesPage() {
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
-
     const onWheel = (e: WheelEvent) => {
       if (e.deltaY === 0) return;
       e.preventDefault();
       el.scrollLeft += e.deltaY;
     };
-
     el.addEventListener('wheel', onWheel, { passive: false });
-
-    return () => {
-      el.removeEventListener('wheel', onWheel);
-    };
+    return () => el.removeEventListener('wheel', onWheel);
   }, []);
 
   // Sync plant horizontal position with scroll
@@ -59,39 +53,30 @@ export default function CollegeGraduatesPage() {
     const el = scrollRef.current;
     const plant = plantRef.current;
     if (!el || !plant) return;
-
     const updatePlantPosition = () => {
       plant.style.transform = `translateX(-${el.scrollLeft}px)`;
     };
-
     el.addEventListener('scroll', updatePlantPosition);
     updatePlantPosition();
-
-    return () => {
-      el.removeEventListener('scroll', updatePlantPosition);
-    };
+    return () => el.removeEventListener('scroll', updatePlantPosition);
   }, []);
 
-  // Intersection observer on sentinel element to load more graduates
+  // Intersection observer on sentinel to load more
   useEffect(() => {
     const sentinel = sentinelRef.current;
     const container = scrollRef.current;
     if (!sentinel || !container) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          loadMore();
-        }
+        if (entries[0].isIntersecting && hasMore) loadMore(BATCH_SIZE);
       },
       { root: container, rootMargin: '0px 300px 0px 0px', threshold: 0 },
     );
-
     observer.observe(sentinel);
     return () => observer.disconnect();
   }, [hasMore, loadMore]);
 
-  if (!collegeData) {
+  if (college === undefined) {
     return (
       <main className='min-h-screen bg-[#0a0a0a] text-white'>
         <Navbar />
@@ -117,7 +102,6 @@ export default function CollegeGraduatesPage() {
           />
         </div>
 
-        {/* Plant decoration at bottom-left of page */}
         <div
           ref={plantRef}
           className='absolute left-[-3%] w-[320px] h-[400px] sm:w-auto sm:h-[1200px] bottom-[-260px] pointer-events-none'>
@@ -133,22 +117,22 @@ export default function CollegeGraduatesPage() {
             gridAutoFlow: 'column',
             gridAutoColumns: '320px',
           }}>
-          {visibleGraduates.map((graduate, index) => (
+          {graduates.map((graduate, index) => (
             <Link
-              key={graduate.id}
-              href={`/colleges/${collegeKey}/${graduate.id}`}
+              key={graduate._id}
+              href={`/colleges/${collegeKey}/${graduate.slug}`}
               className='relative flex flex-col items-center group cursor-pointer justify-self-center'>
               <motion.div
                 className='relative w-[320px] h-[400px] sm:w-[300px] sm:h-[400px]'
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}>
+                transition={{ duration: 0.4, delay: (index % BATCH_SIZE) * 0.05 }}>
                 <div className='absolute inset-10 overflow-hidden z-0'>
-                  {graduate.image ? (
+                  {graduate.toga_key ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={graduate.image}
-                      alt={graduate.name}
+                      src={`/api/r2/files/${graduate.toga_key}`}
+                      alt={`${graduate.first_name} ${graduate.last_name}`}
                       className='w-full h-full object-contain group-hover:scale-105 transition-transform duration-300'
                     />
                   ) : (
@@ -163,18 +147,21 @@ export default function CollegeGraduatesPage() {
                 className='mt-4 text-center'
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, delay: index * 0.05 + 0.2 }}>
+                transition={{ duration: 0.3, delay: (index % BATCH_SIZE) * 0.05 + 0.2 }}>
                 <h3
                   className='text-[#F4E590] text-base group-hover:text-white transition-colors'
                   style={{ fontFamily: 'var(--font-rosarivo)' }}>
-                  {graduate.name}
+                  {graduate.last_name}, {graduate.first_name}
                 </h3>
-                <p className='text-white/80 text-sm mt-1'>{graduate.title}</p>
+                <p className='text-white/80 text-sm mt-1'>{graduate.program}</p>
               </motion.div>
             </Link>
           ))}
 
-          {/* Sentinel element to trigger loading more */}
+          {status === 'LoadingFirstPage' && (
+            <div className='w-[320px] h-[400px] bg-white/5 animate-pulse' />
+          )}
+
           {hasMore && <div ref={sentinelRef} className='w-1' aria-hidden='true' />}
         </div>
       </section>
